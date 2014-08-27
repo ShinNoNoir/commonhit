@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CommonHIT example</title>
+	</head>
+	<body>
+		<!--
+			Note that normally you put this in the <head> of a document,
+			but Amazon's web editor only allows you to edit the (form) body of a HIT.
+		-->
+		<link href="commonhit.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="commonhit.js"></script>
+		<script type="text/javascript" src="lllight.js"></script>
+		<Header>
+			<h1>CommonHIT example usage</h1>
+		</Header>
+		<div class="intro">
+			<p>
+			This is a short example of how to use the functionality in CommonHIT.
+			Please inspect this document's source code to see how certain functionality is being achieved.
+			</p>
+		</div>
+		
+		<div class="hit-preview-only">
+			This is only shown when the HIT is being previewed by a worker.
+			(This is when the query-string contains assignmentId=ASSIGNMENT_ID_NOT_AVAILABLE.)
+		</div>
+		
+		<div class="hit-accept-only">
+			This is only shown when the HIT has been accepted by a worker.
+		</div>
+		
+		<div>
+			<p>Here is how to include the YouTube player:</p>
+			<div id="ytplayer" 
+				class="lll-player" 
+				data-video-id="ogtG0ZKQOq4" 
+				data-log-field="events" 
+				data-name="lllplayer">
+			</div>
+			<p>Attributes:</p>
+			<dl>
+				<dt><pre>id</pre></dt>
+				<dd>Any unique identifier. Required for the YouTube API.</dd>
+				
+				<dt><pre>class="lll-player"</pre></dt>
+				<dd>Signals <code>lllight.js</code> to insert a YouTube player here.</dd>
+				
+				<dt><pre>data-video-id</pre></dt>
+				<dd>The YouTube video to be played.</dd>
+				
+				<dt><pre>data-log-field</pre></dt>
+				<dd>The name of the hidden form field that <code>lllight.js</code> will create 
+					for storing the user's interactions with the video player.
+				</dd>
+				
+				<dt><pre>data-name</pre></dt>
+				<dd>The name of the global variable that <code>lllight.js</code> will use
+					to expose the scripting functionality of the video player.
+					 
+					For example, you can use JavaScript to <code>.stop()</code> 
+					the playback of a video.
+				</dd>
+				
+				<dt><pre>data-width, data-height</pre></dt>
+				<dd>Optional: Set a custom size for the video player.</dd>
+			</dl>
+		</div>
+		
+		<div class="hit-steps">
+			<h2>Task</h2>
+			<div class="question-group hit-step" data-step="1">
+				Multiple choice question example:
+				<br />
+				<div class="hit-question"  data-name="RadioButtonExample">
+					<input type="radio" value="A" /><label>Option A</label><br />
+					<input type="radio" value="B" /><label>Option B</label><br />
+					<input type="radio" value="C" /><label>Option C</label><br />
+				</div>
+				The script in <code>commonhit.js</code> will automatically generate
+				the required <code>name</code> and <code>id</code> attributes and link
+				the <code>label</code>-tags to the choices.
+				
+				<br />
+								
+				<button onclick="lllplayer.stop(); HIT.nextStep();">Finalize answer and go to the next step</button>
+			</div>
+			
+			<div class="hit-question hit-step" data-step="2" data-name="CheckboxExample">
+				It also works for checkboxes:
+				<br />
+				<input type="checkbox" value="D" /><label>Option D</label><br />
+				<input type="checkbox" value="E" /><label>Option E</label><br />
+				<input type="checkbox" value="F" /><label>Option F</label><br />
+				<br />
+				
+				You can also include a <code>textarea</code> to have workers explain their answers.
+				Within a <code>div</code> with <code>class="hit-question"</code>, 
+				a <code>name</code> attribute will be generated automatically based on the provided
+				<code>data-name</code>-attribute.
+				<textarea cols="80" rows="5" placeholder="Explain your answer"></textarea>
+				
+				<button onclick="HIT.nextStep();">Finalize answer</button>
+			</div>
+						
+			<div class="question-group hit-step" data-step="3">
+				End of this HIT
+				You could also leave some feedback below.
+			</div>
+		</div>
+		<div id="problems" class="hit-accept-only" >
+			<h2>Feedback</h2>
+			If you encountered any problems with this HIT 
+			or have any other comments, 
+			please report them here:
+			<textarea cols="80" rows="3" name="problems"></textarea>
+		</div> 
+	</body>
+</html>

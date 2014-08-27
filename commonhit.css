@@ -1,0 +1,43 @@
+body {
+	font-family: Arial;
+	max-width: 750px;
+	width: 85%;
+}
+header h1 {
+	margin-bottom: 0;
+	font-size: 2em;
+}
+header p.subtitle {
+	margin-top: 0;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+.qualityNotice {
+	font-style: italic;
+	display: block;
+}
+.consentNotice {
+	font-style: italic;
+	display: block;
+}
+.prequalifierNotice {
+	font-weight: bold;
+}
+.previewNotice {
+	font-style: italic;
+	color: red;
+}
+.previewNotice b {
+	color: red;
+}
+#questions {
+	border-top: 1px solid black;
+}
+div.question-group {
+	margin-bottom: 1em;
+	padding: 0.5em;
+	border-bottom: 1px solid black;
+}
+#problems {
+	margin-top: 2em;
+}
