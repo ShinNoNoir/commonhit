@@ -2,6 +2,7 @@
 HIT = {
 	PREVIEW_MODE: false,
 	HIT_ACCEPTED: false,
+	DEBUG: false,
 	
 	CSS_CLASSES: ["hit-question", "hit-accept-only", "hit-preview-only",
 	              "hit-step", "hit-steps"],
@@ -43,6 +44,7 @@ HIT = {
 
 	HIT.query = parseQuery();
 	HIT.PREVIEW_MODE = HIT.query["assignmentId"] === "ASSIGNMENT_ID_NOT_AVAILABLE";
+	HIT.DEBUG = HIT.query["debug"] === "1";
 	HIT.HIT_ACCEPTED = !HIT.PREVIEW_MODE;
 	
 	
@@ -119,6 +121,9 @@ HIT = {
 	HIT.onReady = function () {
 		if (HIT.HIT_ACCEPTED) {
 			HIT.generateIdNames();
+		}
+		if (HIT.DEBUG) {
+			$('.hit-step').show();
 		}
 	};
 })(HIT, jQuery);
