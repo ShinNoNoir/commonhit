@@ -31,8 +31,17 @@
 			This is only shown when the HIT has been accepted by a worker.
 		</div>
 		
+		<script>
+			// If you set HIT.DEBUG_VARS, CommonHIT will do a global search/replace
+			// in debug mode
+			HIT.DEBUG_VARS = {
+				'${VIDEO}': 'ogtG0ZKQOq4'
+			};
+		</script>
 		<div class="hit-debug-only">
 			This is only shown when debug mode is turned on (debug=1 in the query string).
+			Also, in debug mode you can replace variables with dummy values: 
+			$<span>{VIDEO}</span> = ${VIDEO}.
 		</div>
 		
 		<div>

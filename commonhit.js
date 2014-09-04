@@ -3,6 +3,7 @@ HIT = {
 	PREVIEW_MODE: false,
 	HIT_ACCEPTED: false,
 	DEBUG: false,
+	DEBUG_VARS: undefined,
 	
 	CSS_CLASSES: ["hit-question", "hit-accept-only", "hit-preview-only", "hit-debug-only",
 	              "hit-step", "hit-steps"],
@@ -107,6 +108,17 @@ HIT = {
 		}
 	};
 	
+	HIT.debugTemplate = function () {
+		if (HIT.DEBUG && HIT.DEBUG_VARS !== undefined) {
+			$('body').html(function(_, s) {
+				return s.replace(/\$\{(.+?)\}/gi, function(match) {
+					var value = HIT.DEBUG_VARS[match];
+					return value === undefined ? match : HIT.DEBUG_VARS[match];
+				});
+			});
+		}
+	};
+	
 	HIT.setVisibility = function () {
 		if (HIT.PREVIEW_MODE) {
 			$('.hit-preview-only').show();
@@ -145,6 +157,7 @@ jQuery.fn.goTo = function() {
 
 
 jQuery(document).ready(function () {
+	HIT.debugTemplate();
 	HIT.setupSteps();
 	HIT.nextStep();
 	HIT.setVisibility();
