@@ -4,7 +4,7 @@ HIT = {
 	HIT_ACCEPTED: false,
 	DEBUG: false,
 	
-	CSS_CLASSES: ["hit-question", "hit-accept-only", "hit-preview-only",
+	CSS_CLASSES: ["hit-question", "hit-accept-only", "hit-preview-only", "hit-debug-only",
 	              "hit-step", "hit-steps"],
 	
 	STEPS: [],
@@ -115,6 +115,12 @@ HIT = {
 		else if (HIT.HIT_ACCEPTED) {
 			$('.hit-preview-only').hide();
 			$('.hit-accept-only').show();
+		}
+		if (HIT.DEBUG) {
+			$('.hit-debug-only').show();
+		}
+		else {
+			$('.hit-debug-only').hide();
 		}
 	};
 	
