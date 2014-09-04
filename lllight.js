@@ -30,6 +30,25 @@ LLL = {
 	};
 	
 	
+	LLL.injectPlayersIntoDOM = function () {
+		$('.lll-player').each(function() {
+			var $player = $(this);
+			var id = this.id;
+			var video_id = $player.data('video-id');
+			var log_field = $player.data('log-field');
+			var width = $player.data('width');
+			var height = $player.data('height');
+			
+			var exposed_name = $player.data('name');
+			
+			var lllplayer = new LLL.Player(id, video_id, log_field, width, height);
+			
+			if (exposed_name !== undefined) {
+				window[exposed_name] = lllplayer;
+			}
+		});
+	}
+	
 	LLL.Player = function(player_id, video_id, log_field, width, height) {
 		this.player_id = player_id;
 		this.video_id = video_id;
@@ -271,20 +290,5 @@ LLL.loadYouTubeAPI();
 
 
 jQuery(document).ready(function () {
-	$('.lll-player').each(function() {
-		var $player = $(this);
-		var id = this.id;
-		var video_id = $player.data('video-id');
-		var log_field = $player.data('log-field');
-		var width = $player.data('width');
-		var height = $player.data('height');
-		
-		var exposed_name = $player.data('name');
-		
-		var lllplayer = new LLL.Player(id, video_id, log_field, width, height);
-		
-		if (exposed_name !== undefined) {
-			window[exposed_name] = lllplayer;
-		}
-	});
+	LLL.injectPlayersIntoDOM();
 });
