@@ -110,7 +110,7 @@ HIT = {
 	
 	HIT.debugTemplate = function () {
 		if (HIT.DEBUG && HIT.DEBUG_VARS !== undefined) {
-			$('body').html(function(_, s) {
+			$('body *:not(script)').html(function(_, s) {
 				return s.replace(/\$\{(.+?)\}/gi, function(match) {
 					var value = HIT.DEBUG_VARS[match];
 					return value === undefined ? match : HIT.DEBUG_VARS[match];
