@@ -32,7 +32,7 @@ LLL = {
 	
 	LLL.injectPlayersIntoDOM = function () {
 		var exec = function () {
-			$('.lll-player').each(function() {
+			$('.lll-player:not(iframe)').each(function() {
 				var $player = $(this);
 				var id = this.id;
 				var video_id = $player.data('video-id');
