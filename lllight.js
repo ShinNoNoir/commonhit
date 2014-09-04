@@ -97,7 +97,7 @@ LLL = {
 			playerVars: {
 				version: 3,
 				rel: 0,
-				html5: 0,
+				html5: 1,
 				showinfo: 1
 			},
 			events: {
