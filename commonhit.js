@@ -140,9 +140,6 @@ HIT = {
 		if (HIT.HIT_ACCEPTED) {
 			HIT.generateIdNames();
 		}
-		if (HIT.DEBUG) {
-			$('.hit-step').show();
-		}
 	};
 })(HIT, jQuery);
 
