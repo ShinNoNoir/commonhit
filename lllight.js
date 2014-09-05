@@ -296,5 +296,4 @@ LLL = {
 
 onYouTubeIframeAPIReady = LLL.onYouTubeIframeAPIReady;
 LLL.loadYouTubeAPI();
-LLL.injectPlayersIntoDOM();
-
+jQuery(document).ready(LLL.injectPlayersIntoDOM);
