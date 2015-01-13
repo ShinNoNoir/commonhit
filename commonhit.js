@@ -6,12 +6,17 @@ HIT = {
 	DEBUG_VARS: undefined,
 	
 	CSS_CLASSES: ["hit-question", "hit-accept-only", "hit-preview-only", "hit-debug-only",
-	              "hit-step", "hit-steps"],
+	              "hit-step", "hit-steps",
+	              "hit-browser-ua", "hit-html5-video-support", "hit-screen-resolution"],
 	
 	STEPS: [],
 	STEPS_CONTAINER: undefined,
 	currentStep: undefined,
-	currentStepIndex: -1
+	currentStepIndex: -1,
+	
+	BROWSER_UA: navigator.userAgent,
+	BROWSER_HTML5_VIDEO_SUPPORT: (!!document.createElement('video').canPlayType),
+	SCREEN_RESOLUTION: [screen.width, screen.height]
 };
 
 
@@ -140,6 +145,9 @@ HIT = {
 		if (HIT.HIT_ACCEPTED) {
 			HIT.generateIdNames();
 		}
+		$('input.hit-browser-ua').val(HIT.BROWSER_UA);
+		$('input.hit-html5-video-support').val(HIT.BROWSER_HTML5_VIDEO_SUPPORT);
+		$('input.hit-screen-resolution').val(HIT.SCREEN_RESOLUTION);
 	};
 })(HIT, jQuery);
 
