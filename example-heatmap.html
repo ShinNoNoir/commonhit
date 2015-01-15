@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CommonHIT heat-map example</title>
+	</head>
+	<body>
+		<!--
+			Note that normally you put this in the <head> of a document,
+			but Amazon's web editor only allows you to edit the (form) body of a HIT.
+		-->
+		<link href="commonhit.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="commonhit.js"></script>
+		<script type="text/javascript" src="lllight.js"></script>
+		<script type="text/javascript" src="llheatmap.js"></script>
+		<Header>
+			<h1>CommonHIT heat-map example</h1>
+		</Header>
+		<div class="intro">
+			<p>
+			This is a short example of how to use the heat-map functionality in CommonHIT.
+			Please inspect this document's source code to see how certain functionality is being achieved.
+			</p>
+		</div>
+		
+		<div>
+			<p>First, include the YouTube player.
+				Here, we use <code>data-name="lllplayer"</code>:
+			</p>
+			<div id="ytplayer" 
+				class="lll-player" 
+				data-video-id="ogtG0ZKQOq4" 
+				data-log-field="events" 
+				data-name="lllplayer">
+			</div>
+		</div>
+		
+		<div>
+			<p>How to include the heat-map:</p>
+			<div class="lll-heatmap"
+				data-name="heatmap"
+				data-for="lllplayer"></div>
+			<p>
+				Note: A heat-map requires that the player's scripting functionality is exposed.
+				This means the <code>data-name</code> attribute on the player is required.
+			</p>
+		</div>
+	</body>
+</html>

@@ -41,3 +41,7 @@ div.question-group {
 #problems {
 	margin-top: 2em;
 }
+
+.lll-heatmap {
+	border: 1px solid black;
+}
