@@ -291,6 +291,15 @@ LLL = {
 		this.ytplayer.seekTo(timepoint, allowSeekAhead || false);
 	};
 	
+	LLL.Player.prototype.getDuration = function() {
+		// Note: this returns an approximation (int) when playback has not yet started
+		return this.ytplayer.getDuration();
+	};
+	
+	LLL.Player.prototype.getCurrentTime = function() {
+		return this.ytplayer.getCurrentTime();
+	};
+	
 })(LLL, jQuery);
 
 
