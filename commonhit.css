@@ -42,6 +42,6 @@ div.question-group {
 	margin-top: 2em;
 }
 
-.lll-heatmap {
+.lll-heatmap canvas {
 	border: 1px solid black;
 }

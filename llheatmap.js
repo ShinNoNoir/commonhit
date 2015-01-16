@@ -39,22 +39,18 @@ LLL.HEATMAP = {
 	};
 	
 	HEATMAP.Heatmap = function(node, lllplayer, width, height) {
-		this.canvas = undefined;
+		this.node = node;
+		this.canvas = document.createElement('canvas');
 		this.lllplayer = lllplayer;
 		
 		this.width = width || HEATMAP.DEFAULT_WIDTH;
 		this.height = height || HEATMAP.DEFAULT_HEIGHT;
 		
-		
-		var node_attrs = {};
-		$.each(node.attributes, function (idx, attr) {
-			node_attrs[attr.nodeName] = attr.nodeValue;
+		$(this.canvas).prop({
+			width: this.width,
+			height: this.height
 		});
-		node_attrs.width = this.width;
-		node_attrs.height = this.height;
-		
-		this.canvas = $('<canvas>', node_attrs)[0];
-		$(node).replaceWith(this.canvas)
+		$(node).append(this.canvas);
 	};
 	
 })(LLL, LLL.HEATMAP, jQuery);
