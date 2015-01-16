@@ -51,6 +51,40 @@ LLL.HEATMAP = {
 			height: this.height
 		});
 		$(node).append(this.canvas);
+		
+		this._bindHandlers();
+	};
+	
+	HEATMAP.Heatmap.prototype._eventToTimepoint = function (e, domNode) {
+		var $node = $(domNode);
+		
+		var x = e.clientX + 
+		        ((window.pageXOffset !== undefined) ? window.pageXOffset 
+		                                            : (document.documentElement || document.body).scrollLeft) - 
+		        $node.offset().left;
+		var w = $node.outerWidth();
+		var d = this.lllplayer.getDuration();
+		
+		if (x < 0) {
+			x = 0;
+		}
+		else if (x >= w) {
+			x = w-1;
+		}
+		
+		return (d !== -1) ? x*d/w : -1;
+	};
+	
+	HEATMAP.Heatmap.prototype._bindHandlers = function() {
+		var self = this;
+		var $canvas = $(this.canvas);
+		
+		var canvasOnClick = function(e) {
+			var t = self._eventToTimepoint(e, this);
+			self.lllplayer.seek(t);
+		};
+		
+		$(this.canvas).click(canvasOnClick);
 	};
 	
 })(LLL, LLL.HEATMAP, jQuery);

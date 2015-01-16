@@ -44,4 +44,5 @@ div.question-group {
 
 .lll-heatmap canvas {
 	border: 1px solid black;
+	cursor: pointer;
 }

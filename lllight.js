@@ -288,6 +288,9 @@ LLL = {
 	};
 	LLL.Player.prototype.seek = function(timepoint, allowSeekAhead) {
 		this._setTicker();
+		if (allowSeekAhead === undefined) {
+			allowSeekAhead = true;
+		}
 		this.ytplayer.seekTo(timepoint, allowSeekAhead || false);
 	};
 	
