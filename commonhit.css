@@ -42,7 +42,20 @@ div.question-group {
 	margin-top: 2em;
 }
 
+.lll-heatmap {
+	display: inline-block;
+}
 .lll-heatmap canvas {
 	border: 1px solid black;
 	cursor: pointer;
+}
+.lll-heatmap .lll-timecode {
+	display: none;
+	background-color: gray;
+	padding: 5px;
+}
+.lll-heatmap:hover .lll-timecode {
+	display: block;
+	position: fixed;
+	overflow: hidden;
 }

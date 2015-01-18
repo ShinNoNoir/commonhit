@@ -42,6 +42,7 @@ LLL.HEATMAP = {
 		this.node = node;
 		this.canvas = document.createElement('canvas');
 		this.lllplayer = lllplayer;
+		this.timecode = document.createElement('span');
 		
 		this.width = width || HEATMAP.DEFAULT_WIDTH;
 		this.height = height || HEATMAP.DEFAULT_HEIGHT;
@@ -50,7 +51,9 @@ LLL.HEATMAP = {
 			width: this.width,
 			height: this.height
 		});
-		$(node).append(this.canvas);
+		$(node).append(this.canvas)
+		       .append($(this.timecode).addClass('lll-timecode').html('00:00')
+		);
 		
 		this._bindHandlers();
 	};
@@ -77,14 +80,39 @@ LLL.HEATMAP = {
 	
 	HEATMAP.Heatmap.prototype._bindHandlers = function() {
 		var self = this;
-		var $canvas = $(this.canvas);
 		
+		var $canvas = $(this.canvas);
 		var canvasOnClick = function(e) {
 			var t = self._eventToTimepoint(e, this);
 			self.lllplayer.seek(t);
 		};
-		
 		$(this.canvas).click(canvasOnClick);
+		
+		var timecode = this.timecode;
+		var updateTimeCode = function(e) {
+			var x = (e.clientX + 20) + 'px';
+			var y = (e.clientY + 0) + 'px';
+			timecode.style.top = y;
+			timecode.style.left = x;
+			
+			var t = self._eventToTimepoint(e, self.canvas);
+			$(timecode).html(HEATMAP.timecodeToHHMMSS(t));
+		};
+		$(this.node).mousemove(updateTimeCode);
+	};
+	
+	HEATMAP.timecodeToHHMMSS = function(t) {
+		var hours = Math.floor(t / 3600);
+		t -= hours*3600;
+		var minutes = Math.floor(t / 60);
+		t -= minutes*60;
+		var seconds = Math.floor(t);
+		
+		var hh = (hours < 10)   ? ('0'+hours)   : hours;
+		var mm = (minutes < 10) ? ('0'+minutes) : minutes;
+		var ss = (seconds < 10) ? ('0'+seconds) : seconds;
+		
+		return ((hours > 0) ? (hh+':') : '') + mm+':'+ss; 
 	};
 	
 })(LLL, LLL.HEATMAP, jQuery);
