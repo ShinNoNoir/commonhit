@@ -39,7 +39,8 @@
 			<p>How to include the heat-map:</p>
 			<div class="lll-heatmap"
 				data-name="heatmap"
-				data-for="lllplayer"></div>
+				data-for="lllplayer"
+				data-map="0.5,1,0.5,0.2,0.2,0.2,0.8,0.2,0.2"></div>
 			<p>Attributes:</p>
 			<dl>
 				<dt><pre>class="lll-heatmap"</pre></dt>
@@ -55,6 +56,11 @@
 					
 					Note: This means that the player's scripting functionality must be exposed.
 					That is, the <code>data-name</code> attribute on the player is required.
+				</dd>
+				
+				<dt><pre>data-map</pre></dt>
+				<dd>
+					The heat-map to be painted, represented as a comma-separated list of numbers.
 				</dd>
 				
 				<dt><pre>data-width, data-height</pre></dt>

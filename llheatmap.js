@@ -14,13 +14,14 @@ LLL.HEATMAP = {
 				var $heatmap_div = $(this);
 				
 				var lllplayer_exposed_name = $heatmap_div.data('for');
+				var map = HEATMAP._parseFloatList( $heatmap_div.data('map') || '' );
 				var width = $heatmap_div.data('width');
 				var height = $heatmap_div.data('height');
 				
 				var lllplayer = window[lllplayer_exposed_name];
 				var exposed_name = $heatmap_div.data('name');
 				
-				var heatmap = new HEATMAP.Heatmap(this, lllplayer, width, height);
+				var heatmap = new HEATMAP.Heatmap(this, lllplayer, map, width, height);
 				
 				if (exposed_name !== undefined) {
 					window[exposed_name] = heatmap;
@@ -38,11 +39,24 @@ LLL.HEATMAP = {
 		}
 	};
 	
-	HEATMAP.Heatmap = function(node, lllplayer, width, height) {
+	HEATMAP._parseFloatList = function(s) {
+		var parts = s.split(',');
+		var fs = [];
+		
+		for(var i=0, n=parts.length; i < n; i++){
+			if (!/^\s*$/.test(parts[i])) {
+				fs.push( parseFloat(parts[i]) );
+			}
+		}
+		return fs;
+	};
+	
+	HEATMAP.Heatmap = function(node, lllplayer, map, width, height) {
 		this.node = node;
 		this.canvas = document.createElement('canvas');
 		this.lllplayer = lllplayer;
 		this.timecode = document.createElement('span');
+		this.map = map || [];
 		
 		this.width = width || HEATMAP.DEFAULT_WIDTH;
 		this.height = height || HEATMAP.DEFAULT_HEIGHT;
