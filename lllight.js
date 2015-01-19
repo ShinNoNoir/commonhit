@@ -271,6 +271,33 @@ LLL = {
 		return segments;
 	};
 	
+	LLL.Player.prototype.getViewHistogram = function() {
+		var segments = this.getViewedSegments(); 
+		
+		var d = this.getDuration();
+		var N = Math.floor(d);
+		var bins = LLL.Util.zeros(N+1);
+		
+		var last_b = undefined;
+		for (var i=0, n=segments.length; i < n; i ++) {
+			var a = Math.floor(segments[i][0]);
+			var b = Math.floor(segments[i][1]);
+			
+			if (a == last_b) {
+				// prevent peaks around near-adjacent segments
+				a += 1;
+			}
+			
+			for (var k=a; k <= b; k++) {
+				bins[k] += 1;
+			}
+			
+			last_b = b;
+		}
+		
+		return bins;
+	};
+	
 	LLL.Player.prototype.viewSessionLength = function() {
 		var segments = this.getViewedSegments();
 		var res = 0;
@@ -308,6 +335,24 @@ LLL = {
 	
 	LLL.Player.prototype.getCurrentTime = function() {
 		return this.ytplayer.getCurrentTime();
+	};
+	
+	LLL.Util = {};
+	LLL.Util.zeros = function (length) {
+		var res = [];
+		for (var i = 0; i < length; i++) {
+			res.push(0);
+		}
+		return res;
+	};
+	LLL.Util.linspace = function (d1, d2, numPoints) {
+		var res = [];
+		var step = (d2-d1)/(numPoints-1);
+		for (var i = 0; i < numPoints-1; i++) {
+			res.push(d1 + i*step);
+		}
+		res.push(d2);
+		return res;
 	};
 	
 })(LLL, jQuery);

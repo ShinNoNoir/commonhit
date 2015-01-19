@@ -139,6 +139,23 @@ LLL.HEATMAP = {
 		}
 	};
 	
+	HEATMAP.Heatmap.prototype.heatmapFromViewHistogram = function(bins) {
+		var heatmap = LLL.Util.zeros(bins.length);
+		
+		var max;
+		max = bins[0];
+		for (var i = 1, n = bins.length; i < n; i++) {
+			max = Math.max(max, bins[i]);
+		}
+		
+		var scale = (max > 0) ? max : 1;
+		for (var i = 0, n = heatmap.length; i < n; i++) {
+			heatmap[i] = bins[i] / scale;
+		}
+		
+		return heatmap;
+	};
+	
 	HEATMAP.timecodeToHHMMSS = function(t) {
 		var hours = Math.floor(t / 3600);
 		t -= hours*3600;
@@ -153,32 +170,15 @@ LLL.HEATMAP = {
 		return ((hours > 0) ? (hh+':') : '') + mm+':'+ss; 
 	};
 	
-	var zeros = function (length) {
-		var res = [];
-		for (var i = 0; i < length; i++) {
-			res.push(0);
-		}
-		return res;
-	};
-	var linspace = function (d1, d2, numPoints) {
-		var res = [];
-		var step = (d2-d1)/(numPoints-1);
-		for (var i = 0; i < numPoints-1; i++) {
-			res.push(d1 + i*step);
-		}
-		res.push(d2);
-		return res;
-	};
-	
 	HEATMAP._scaleArray = function (data, newSize) {
 		var n = (data || []).length;
 		var scaledArray;
 		
 		if (n == 0 || newSize == 0) {
-			return zeros(newSize);
+			return LLL.Util.zeros(newSize);
 		}
 		else if (n <= 2) {
-			return linspace(data[0], data[n-1], newSize);
+			return LLL.Util.linspace(data[0], data[n-1], newSize);
 		}
 		
 		// interpolate
