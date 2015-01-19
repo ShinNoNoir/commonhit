@@ -129,6 +129,40 @@ LLL.HEATMAP = {
 		return ((hours > 0) ? (hh+':') : '') + mm+':'+ss; 
 	};
 	
+	
+	HEATMAP.createPalette = function (/*colorstop, ...*/) {
+		var colorstops = Array.prototype.slice.call(arguments);
+		var n = colorstops.length;
+		
+		return function (x) {
+			for (var i = 0; i < n; i++) {
+				if (x == colorstops[i][0]) {
+					return colorstops[i][1];
+				} else if (x < colorstops[i][0]) {
+					var a = i-1;
+					var b = i;
+					var c_a = colorstops[a][1];
+					var c_b = colorstops[b][1];
+					
+					var w_a = (colorstops[b][0] - x) / (colorstops[b][0] - colorstops[a][0]);
+					var w_b = 1 - w_a;
+					
+					var res = [0,0,0];
+					for (var k=0; k<3; k++) {
+						res[k] = Math.round(w_a*c_a[k] + w_b*c_b[k]);
+					}
+					return res;
+				} 
+			};
+			
+			return [0,0,0];
+		};
+	};
+	
+	HEATMAP.DEFAULT_PALETTE = HEATMAP.createPalette([0.0, [255, 255, 255]],
+	                                                [0.2, [255, 255,   0]],
+	                                                [1.0, [255,   0,   0]]);
+	
 })(LLL, LLL.HEATMAP, jQuery);
 
 
