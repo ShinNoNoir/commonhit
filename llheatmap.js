@@ -70,6 +70,7 @@ LLL.HEATMAP = {
 		);
 		
 		this._bindHandlers();
+		this.paintHeatmap(map);
 	};
 	
 	HEATMAP.Heatmap.prototype._eventToTimepoint = function (e, domNode) {
@@ -115,6 +116,29 @@ LLL.HEATMAP = {
 		$(this.node).mousemove(updateTimeCode);
 	};
 	
+	HEATMAP.Heatmap.prototype.paintHeatmap = function(heatmap, dontScale) {
+		var ctx = this.canvas.getContext('2d');
+		var w = this.width;
+		var elWidth = 1;
+		var elHeight = this.height;
+		
+		var palette = HEATMAP.DEFAULT_PALETTE;
+		
+		if (!dontScale) {
+			heatmap = HEATMAP._scaleArray(heatmap, w);
+		}
+		
+		for(var i = 0; i < w; i++) {
+			ctx.beginPath();
+			
+			var val = heatmap[i];
+			var color = palette(val);
+			ctx.fillStyle = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+			
+			ctx.fillRect(i, 0, elWidth, elHeight);
+		}
+	};
+	
 	HEATMAP.timecodeToHHMMSS = function(t) {
 		var hours = Math.floor(t / 3600);
 		t -= hours*3600;
@@ -129,6 +153,46 @@ LLL.HEATMAP = {
 		return ((hours > 0) ? (hh+':') : '') + mm+':'+ss; 
 	};
 	
+	var zeros = function (length) {
+		var res = [];
+		for (var i = 0; i < length; i++) {
+			res.push(0);
+		}
+		return res;
+	};
+	var linspace = function (d1, d2, numPoints) {
+		var res = [];
+		var step = (d2-d1)/(numPoints-1);
+		for (var i = 0; i < numPoints-1; i++) {
+			res.push(d1 + i*step);
+		}
+		res.push(d2);
+		return res;
+	};
+	
+	HEATMAP._scaleArray = function (data, newSize) {
+		var n = (data || []).length;
+		var scaledArray;
+		
+		if (n == 0 || newSize == 0) {
+			return zeros(newSize);
+		}
+		else if (n <= 2) {
+			return linspace(data[0], data[n-1], newSize);
+		}
+		
+		// interpolate
+		var step = (n-1)/(newSize-1);
+		scaledArray = [];
+		for (var j = 0; j < newSize-1; j++) {
+			var x = j*step;
+			var i = Math.floor(x);
+			scaledArray[j] = data[i] + (x-i) * (data[i+1] - data[i]);
+		}
+		scaledArray[newSize-1] = data[n-1];
+		
+		return scaledArray;
+	}
 	
 	HEATMAP.createPalette = function (/*colorstop, ...*/) {
 		var colorstops = Array.prototype.slice.call(arguments);
