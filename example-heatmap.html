@@ -36,11 +36,18 @@
 		</div>
 		
 		<div>
-			<p>How to include the heat-map:</p>
+			<p>How to include a static heat-map:</p>
 			<div class="lll-heatmap"
 				data-name="heatmap"
 				data-for="lllplayer"
 				data-map="0.5,1,0.5,0.2,0.2,0.2,0.8,0.2,0.2"></div>
+			
+			<p>How to include a live heat-map (mainly for debugging purposes):</p>
+			<div class="lll-heatmap"
+				data-name="live_heatmap"
+				data-for="lllplayer"
+				data-map="LIVE"></div>
+			
 			<p>Attributes:</p>
 			<dl>
 				<dt><pre>class="lll-heatmap"</pre></dt>
@@ -60,8 +67,10 @@
 				
 				<dt><pre>data-map</pre></dt>
 				<dd>
-					The heat-map to be painted, represented as a comma-separated list of numbers.
-					The numbers in this list should lie between 0.0 and 1.0.
+					The heat-map to be painted, represented as a comma-separated list of numbers
+					between 0.0 and 1,
+					or the string <code>"LIVE"</code> for a live heat-map 
+					that depicts which parts of the video have been watched.
 				</dd>
 				
 				<dt><pre>data-width, data-height</pre></dt>

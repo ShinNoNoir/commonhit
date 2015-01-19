@@ -14,14 +14,21 @@ LLL.HEATMAP = {
 				var $heatmap_div = $(this);
 				
 				var lllplayer_exposed_name = $heatmap_div.data('for');
-				var map = HEATMAP._parseFloatList( $heatmap_div.data('map') || '' );
+				var map = [];
 				var width = $heatmap_div.data('width');
 				var height = $heatmap_div.data('height');
+				
+				var live_map;
+				var data_map = $heatmap_div.data('map') || '';
+				if (!(live_map = (data_map.toUpperCase() === 'LIVE'))) {
+					map = HEATMAP._parseFloatList(data_map);
+				}
 				
 				var lllplayer = window[lllplayer_exposed_name];
 				var exposed_name = $heatmap_div.data('name');
 				
 				var heatmap = new HEATMAP.Heatmap(this, lllplayer, map, width, height);
+				heatmap.showLiveHeatmap(live_map);
 				
 				if (exposed_name !== undefined) {
 					window[exposed_name] = heatmap;
@@ -57,6 +64,7 @@ LLL.HEATMAP = {
 		this.lllplayer = lllplayer;
 		this.timecode = document.createElement('span');
 		this.map = map || [];
+		this.live_map_timer = undefined;
 		
 		this.width = width || HEATMAP.DEFAULT_WIDTH;
 		this.height = height || HEATMAP.DEFAULT_HEIGHT;
@@ -154,6 +162,22 @@ LLL.HEATMAP = {
 		}
 		
 		return heatmap;
+	};
+	
+	HEATMAP.Heatmap.prototype.showLiveHeatmap = function(show) {
+		show = (show === undefined) || show;
+		
+		if (show && this.live_map_timer === undefined) {
+			var self = this;
+			this.live_map_timer = window.setInterval(function () {
+				self.map = self.heatmapFromViewHistogram(self.lllplayer.getViewHistogram());
+				self.paintHeatmap( self.map );
+			}, 500);
+		}
+		else if (!show && this.live_map_timer !== undefined) {
+			window.clearInterval(this.live_map_timer);
+			this.live_map_timer = undefined;
+		}
 	};
 	
 	HEATMAP.timecodeToHHMMSS = function(t) {
