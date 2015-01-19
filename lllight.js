@@ -242,6 +242,35 @@ LLL = {
 		}
 	};
 	
+	LLL.Player.prototype.getViewedSegments = function() {
+		var curSegment = undefined;
+		var segments = [];
+		
+		for(var i=0,n=this.eventlog.length; i<n; i++) {
+			var evt = this.eventlog[i];
+			var evtType = evt[1];
+			var tc = evt[2];
+			var last_tc = evt[3];
+			
+			if (curSegment !== undefined) {
+				curSegment[1] = last_tc;
+			}
+			
+			if (evtType === 'PLAYING' || evtType === 'PAUSED' || evtType === 'ENDED') {
+				if (curSegment !== undefined && curSegment[1] !== undefined) {
+					segments.push(curSegment);
+				}
+				curSegment = (evtType === 'PLAYING') ? [tc, undefined] : undefined;
+			}
+		}
+		
+		if (curSegment !== undefined && curSegment[1] !== undefined) {
+			segments.push(curSegment);
+		}
+		
+		return segments;
+	};
+	
 	LLL.Player.prototype.viewSessionLength = function() {
 		var res = 0;
 		var curSegment = undefined;
