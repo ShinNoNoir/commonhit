@@ -40,10 +40,26 @@
 			<div class="lll-heatmap"
 				data-name="heatmap"
 				data-for="lllplayer"></div>
-			<p>
-				Note: A heat-map requires that the player's scripting functionality is exposed.
-				This means the <code>data-name</code> attribute on the player is required.
-			</p>
+			<p>Attributes:</p>
+			<dl>
+				<dt><pre>class="lll-heatmap"</pre></dt>
+				<dd>Signals <code>llheatmap.js</code> to insert a heat-map here.</dd>
+				
+				<dt><pre>data-name</pre></dt>
+				<dd>The name of the global variable that <code>llheatmap.js</code> will use
+					to expose the scripting functionality of the heat-map.
+				</dd>
+				
+				<dt><pre>data-for</pre></dt>
+				<dd>The name of the player for which this heat-map is for.
+					
+					Note: This means that the player's scripting functionality must be exposed.
+					That is, the <code>data-name</code> attribute on the player is required.
+				</dd>
+				
+				<dt><pre>data-width, data-height</pre></dt>
+				<dd>Optional: Set a custom size for the heat-map.</dd>
+			</dl>
 		</div>
 	</body>
 </html>
