@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CommonHIT heat-map example</title>
+	</head>
+	<body>
+		<!--
+			Note that normally you put this in the <head> of a document,
+			but Amazon's web editor only allows you to edit the (form) body of a HIT.
+		-->
+		<link href="commonhit.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="commonhit.js"></script>
+		<script type="text/javascript" src="lllight.js"></script>
+		<script type="text/javascript" src="llheatmap.js"></script>
+		<Header>
+			<h1>CommonHIT heat-map example</h1>
+		</Header>
+		<div class="intro">
+			<p>
+			This is a short example of how to use the heat-map functionality in CommonHIT.
+			Please inspect this document's source code to see how certain functionality is being achieved.
+			</p>
+		</div>
+		
+		<div>
+			<p>First, include the YouTube player.
+				Here, we use <code>data-name="lllplayer"</code>:
+			</p>
+			<div id="ytplayer" 
+				class="lll-player" 
+				data-video-id="ogtG0ZKQOq4" 
+				data-log-field="events" 
+				data-name="lllplayer">
+			</div>
+		</div>
+		
+		<div>
+			<p>How to include a static heat-map:</p>
+			<div class="lll-heatmap"
+				data-name="heatmap"
+				data-for="lllplayer"
+				data-map="0.5,1,0.5,0.2,0.2,0.2,0.8,0.2,0.2"></div>
+			
+			<p>How to include a live heat-map (mainly for debugging purposes):</p>
+			<div class="lll-heatmap"
+				data-name="live_heatmap"
+				data-for="lllplayer"
+				data-map="LIVE"></div>
+			
+			<p>Attributes:</p>
+			<dl>
+				<dt><pre>class="lll-heatmap"</pre></dt>
+				<dd>Signals <code>llheatmap.js</code> to insert a heat-map here.</dd>
+				
+				<dt><pre>data-name</pre></dt>
+				<dd>The name of the global variable that <code>llheatmap.js</code> will use
+					to expose the scripting functionality of the heat-map.
+				</dd>
+				
+				<dt><pre>data-for</pre></dt>
+				<dd>The name of the player for which this heat-map is for.
+					
+					Note: This means that the player's scripting functionality must be exposed.
+					That is, the <code>data-name</code> attribute on the player is required.
+				</dd>
+				
+				<dt><pre>data-map</pre></dt>
+				<dd>
+					The heat-map to be painted, represented as a comma-separated list of numbers
+					between 0.0 and 1,
+					or the string <code>"LIVE"</code> for a live heat-map 
+					that depicts which parts of the video have been watched.
+				</dd>
+				
+				<dt><pre>data-width, data-height</pre></dt>
+				<dd>Optional: Set a custom size for the heat-map.</dd>
+			</dl>
+			
+			<p>Scripting example:
+				<blockquote>
+					<pre>heatmap.paintHeatmap([0,0,0.8,0,0,1,0]);</pre>
+					<button type="button" onclick="heatmap.paintHeatmap([0,0,0.8,0,0,1,0]);">Run example</button>
+				</blockquote>
+			</p>
+		</div>
+	</body>
+</html>
