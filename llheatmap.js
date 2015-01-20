@@ -170,6 +170,8 @@ LLL.HEATMAP = {
 		if (show && this.live_map_timer === undefined) {
 			var self = this;
 			this.live_map_timer = window.setInterval(function () {
+				if (!self.lllplayer.ready)
+					return;
 				self.map = self.heatmapFromViewHistogram(self.lllplayer.getViewHistogram());
 				self.paintHeatmap( self.map );
 			}, 500);

@@ -138,7 +138,7 @@ LLL = {
 		if (this.ticker === undefined) {
 			var self = this;
 			this.ticker = window.setInterval(function () {
-				self.lastTickTC = self.ytplayer.getCurrentTime();
+				self.lastTickTC = self.getCurrentTime();
 				self.onPlaybackEvent('TICK');
 			}, 250);
 		}
@@ -153,7 +153,7 @@ LLL = {
 	
 	LLL.Player.prototype.onPlaybackEvent = function(evtType) {
 		var cur_ts = new Date().getTime() / 1000;
-		var cur_pb_pos = this.ytplayer.getCurrentTime();
+		var cur_pb_pos = this.getCurrentTime();
 		var interaction = [cur_ts, evtType, cur_pb_pos, this.lastTickTC];
 		
 		this.eventlog.push(interaction);
@@ -334,7 +334,7 @@ LLL = {
 	};
 	
 	LLL.Player.prototype.getCurrentTime = function() {
-		return this.ytplayer.getCurrentTime();
+		return (this.ytplayer.getCurrentTime !== undefined) ? this.ytplayer.getCurrentTime() : 0;
 	};
 	
 	LLL.Util = {};
