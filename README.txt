@@ -9,6 +9,8 @@ Mechanical Turk crowdsourcing platform.
  	Script for reducing boilerplate in HIT designs. 
  * lllight.js
  	A lightweight player for recording interactions with the YouTube player.
+ * llheatmap.js
+ 	A heat-map navigation bar that can be used in conjunction with lllight.js.
 
 
 Status: Experimental
