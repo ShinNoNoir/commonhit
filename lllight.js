@@ -67,6 +67,8 @@ LLL = {
 		this.eventlog_serialized_prefix = ''; // everything except the last two events
 		this.eventlog_serialized_prefix_length = 0;
 		
+		this.eventlog_full = []; // FOR DEBUG
+		
 		this.width = width || LLL.DEFAULT_WIDTH;
 		this.height = height || LLL.DEFAULT_HEIGHT;
 		
@@ -132,6 +134,12 @@ LLL = {
 			this._setTicker();
 			this.onPlaybackEvent(evtType);
 		}
+		else {
+			var cur_ts = new Date().getTime() / 1000;
+			var cur_pb_pos = this.getCurrentTime();
+			var interaction = [cur_ts, 'STATE['+evt.data+']', cur_pb_pos, this.lastTickTC];
+			this.eventlog_full.push(interaction);
+		}
 	};
 	
 	LLL.Player.prototype._setTicker = function() {
@@ -157,6 +165,7 @@ LLL = {
 		var interaction = [cur_ts, evtType, cur_pb_pos, this.lastTickTC];
 		
 		this.eventlog.push(interaction);
+		this.eventlog_full.push(interaction); // FOR DEBUG
 		
 		// Merging/Mapping the last two events
 		var THRESHOLD = 1;
