@@ -125,7 +125,8 @@ LLL = {
 		var evtType = {
 			 0: 'ENDED',
 			 1: 'PLAYING',
-			 2: 'PAUSED'
+			 2: 'PAUSED',
+			 3: 'BUFFERING'
 		}[evt.data];
 		
 		this.ytstate = evt.data;
@@ -169,6 +170,7 @@ LLL = {
 		
 		// Merging/Mapping the last two events
 		var THRESHOLD = 1;
+		var REWIND_THRESHOLD = -0.5;
 		if (this.eventlog.length >= 2) {
 			var evt2 = this.eventlog.pop();
 			var evt1 = this.eventlog.pop();
@@ -176,9 +178,10 @@ LLL = {
 			
 			var evt1Type = evt1[1];
 			var evt2Type = evt2[1];
+			var d_pb_pos = evt2[2]-evt1[2]; 
 			
 			if (evt1Type === "TICK" && evt2Type === "TICK") {
-				if (Math.abs(evt1[2]-evt2[2]) > THRESHOLD) {
+				if (Math.abs(d_pb_pos) > THRESHOLD) {
 					// YT HTML5 player doesn't seem to raise events when seeking in buffered segments
 					replacement.push([evt1[0], "PAUSED", evt1[2], evt1[3]]);
 					replacement.push([evt2[0], "PLAYING", evt2[2], evt2[3]]);
@@ -188,7 +191,7 @@ LLL = {
 				}
 			}
 			else if (evt1Type === "PAUSED" && evt2Type === "TICK") {
-				if (Math.abs(evt1[2]-evt2[2]) > THRESHOLD) {
+				if (Math.abs(d_pb_pos) > THRESHOLD) {
 					replacement.push(evt1);
 					replacement.push([evt2[0], "PAUSED", evt2[2], evt2[3]]);
 				}
@@ -196,8 +199,17 @@ LLL = {
 					replacement.push(evt1);
 				}
 			}
-			else if (evt1Type === "TICK" && evt2Type === "PAUSED" && Math.abs(evt1[2]-evt2[2]) < THRESHOLD) {
+			else if (evt1Type === "TICK" && evt2Type === "PAUSED" && Math.abs(d_pb_pos) < THRESHOLD) {
 				replacement.push(evt2);
+			}
+			else if (evt2Type === "BUFFERING") {
+				if (Math.abs(d_pb_pos) > THRESHOLD || d_pb_pos < REWIND_THRESHOLD) {
+					replacement.push(evt1);
+					replacement.push([evt2[0], "PAUSED", evt1[2], evt1[2],'--was BUFFERING', evt2]);
+				}
+				else {
+					replacement.push(evt1);
+				}
 			}
 			else {
 				replacement = [evt1, evt2];
