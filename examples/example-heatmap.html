@@ -35,38 +35,6 @@
 			</div>
 		</div>
 		
-		<script type="application/javascript">
-			function containsInvalidSegment(segments) {
-				for(var i=0, n=segments.length; i<n; i++) {
-					var segment = segments[i];
-					var length = segment[1] - segment[0];
-					if (length <= -0.5)
-						return true;
-				}
-				return false;
-			}
-			
-			var debug_timer;
-			jQuery(document).ready(function() {
-				debug_timer = window.setInterval(function() {
-					if (lllplayer && lllplayer.ready) {
-						var segments = lllplayer.getViewedSegments();
-						if ( containsInvalidSegment(segments) ) {
-							console.log('SEGMENTS');
-							console.table(segments);
-							console.log('RAW EVENT LOG');
-							console.table(lllplayer.eventlog_full);
-							
-							console.log('EVENT LOG');
-							console.table(lllplayer.eventlog);
-							
-							window.clearInterval(debug_timer);
-						}
-					}
-				}, 500)
-			});
-		</script>
-		
 		<div>
 			<p>How to include a static heat-map:</p>
 			<div class="lll-heatmap"
