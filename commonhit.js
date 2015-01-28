@@ -167,6 +167,16 @@ HIT = {
 		$('input.hit-html5-video-support').val(HIT.BROWSER_HTML5_VIDEO_SUPPORT);
 		$('input.hit-screen-resolution').val(HIT.SCREEN_RESOLUTION);
 	};
+	
+	HIT.shuffleArray = function (array) {
+		for (var i = array.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+		return array;
+	};
 })(HIT, jQuery);
 
 

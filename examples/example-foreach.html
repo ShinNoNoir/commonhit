@@ -37,6 +37,7 @@
 			HIT.DEBUG = 1;
 		</script>
 		
+		<h2>Basic example</h2>
 		<div>
 			<p>
 				Any container with the CSS class <code>hit-foreach</code> will act as a template
@@ -73,6 +74,29 @@
 						value: x
 					};
 				});
+			}
+		</script>
+		
+		<h2>Randomization</h2>
+		<div>
+			<p>
+				Sometimes you want the order of the list to be random.
+				This can be achieved by using <code>HIT.shuffleArray(array)</code>.
+				This function shuffles the original array <i>in place</i>.
+				The return value of the function is the shuffled array:
+			</p>
+			<div class="hit-question"  data-name="RandomizedList">
+				<div class="hit-foreach" data-func="getRandomizedOptions">
+					<input type="radio" value="{{value}}" /><label>{{label}}</label><br />
+				</div>
+			</div>
+		</div>
+		<!--
+			Randomized:
+		-->
+		<script>
+			function getRandomizedOptions() {
+				return HIT.shuffleArray(getListOptions());
 			}
 		</script>
 	</body>
