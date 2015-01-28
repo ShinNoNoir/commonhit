@@ -196,7 +196,7 @@ LLL = {
 			else if (evt2Type === "BUFFERING") {
 				if (Math.abs(d_pb_pos) > THRESHOLD || d_pb_pos < REWIND_THRESHOLD) {
 					replacement.push(evt1);
-					replacement.push([evt2[0], "PAUSED", evt1[2], evt1[2],'--was BUFFERING', evt2]);
+					replacement.push([evt2[0], "PAUSED", evt1[2], evt1[2]]);
 				}
 				else {
 					replacement.push(evt1);
