@@ -7,6 +7,7 @@ HIT = {
 	
 	CSS_CLASSES: ["hit-question", "hit-accept-only", "hit-preview-only", "hit-debug-only",
 	              "hit-step", "hit-steps",
+	              "hit-foreach", "hit-data",
 	              "hit-browser-ua", "hit-html5-video-support", "hit-screen-resolution"],
 	
 	STEPS: [],
@@ -124,6 +125,23 @@ HIT = {
 		}
 	};
 	
+	HIT.foreachTemplate = function () {
+		$('.hit-foreach').each(function() {
+			var $this = $(this);
+			
+			var template = $this.html();
+			var elements = window[$this.data('func')]();
+			
+			$.each(elements, function(_, el) {
+				var s = template.replace(/\{\{(.+?)\}\}/gi, function(match, p1) {
+					var value = el[p1];
+					return value === undefined ? match : el[p1];
+				});
+				$this.before(s);
+			})
+		}).empty();
+	};
+	
 	HIT.setVisibility = function () {
 		if (HIT.PREVIEW_MODE) {
 			$('.hit-preview-only').show();
@@ -163,6 +181,7 @@ jQuery.fn.goTo = function() {
 
 jQuery(document).ready(function () {
 	HIT.debugTemplate();
+	HIT.foreachTemplate();
 	HIT.setupSteps();
 	HIT.nextStep();
 	HIT.setVisibility();

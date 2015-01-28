@@ -42,6 +42,9 @@ div.question-group {
 	margin-top: 2em;
 }
 
+.hit-data {
+	display: none;
+}
 .lll-heatmap {
 	display: inline-block;
 }
