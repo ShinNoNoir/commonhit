@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CommonHIT foreach example</title>
+	</head>
+	<body>
+		<!--
+			Note that normally you put this in the <head> of a document,
+			but Amazon's web editor only allows you to edit the (form) body of a HIT.
+		-->
+		<link href="../commonhit.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../commonhit.js"></script>
+		<script type="text/javascript" src="../lllight.js"></script>
+		<header>
+			<h1>CommonHIT foreach example</h1>
+		</header>
+		<div class="intro">
+			<p>
+			This is a short example of how to use the foreach functionality in CommonHIT.
+			Please inspect this document's source code to see how certain functionality is being achieved.
+			</p>
+		</div>
+		
+		<!--
+			In this example, we will assume data comes from a CSV file with a TASK_DATA column.
+			Amazon Mechanical Turk would then insert this data into the HTML template:
+		-->
+		<div id='taskData' class="hit-data">${TASK_DATA}</div>
+		<!--
+			In this example, we forcefully enable debug mode:
+		-->
+		<script>
+			HIT.DEBUG_VARS = {
+				'${TASK_DATA}': '1,2,3,4,5,6'
+			};
+			HIT.DEBUG = 1;
+		</script>
+		
+		<h2>Basic example</h2>
+		<div>
+			<p>
+				Any container with the CSS class <code>hit-foreach</code> will act as a template
+				and will be instantiated multiple times (without the wrapping container):
+			</p>
+			<div class="hit-question"  data-name="List">
+				<div class="hit-foreach" data-func="getListOptions">
+					<input type="radio" value="{{value}}" /><label>{{label}}</label><br />
+				</div>
+			</div>
+			<p>
+				The script in <code>commonhit.js</code> will call a global function 
+				(specified by the user in the <code>data-func</code> attribute)
+				to obtain an array of objects 
+					<code>[x_1, x_2, ..., x_<i>n</i>]</code>. 
+				Then for each object, the script will instantiate the template for each object 
+					<code>x_<i>i</i></code>
+				by replacing each
+					<code>{{<i>field</i>}}</code> 
+				in the template with
+					<code>x_<i>i</i>[<i>field</i>]</code>.
+			</p>
+		</div>
+		<!--
+			Here's an example of the user-specified global function.
+			This function grabs the data from a container div
+			and parses it as a list of objects:
+		-->
+		<script>
+			function getListOptions() {
+				return $.map($('#taskData').html().split(','), function(x) {
+					return {
+						label: 'Vote for ' + x,
+						value: x
+					};
+				});
+			}
+		</script>
+		
+		<h2>Randomization</h2>
+		<div>
+			<p>
+				Sometimes you want the order of the list to be random.
+				This can be achieved by using <code>HIT.shuffleArray(array)</code>.
+				This function shuffles the original array <i>in place</i>.
+				The return value of the function is the shuffled array:
+			</p>
+			<div class="hit-question"  data-name="RandomizedList">
+				<div class="hit-foreach" data-func="getRandomizedOptions">
+					<input type="radio" value="{{value}}" /><label>{{label}}</label><br />
+				</div>
+			</div>
+		</div>
+		<!--
+			Randomized:
+		-->
+		<script>
+			function getRandomizedOptions() {
+				return HIT.shuffleArray(getListOptions());
+			}
+		</script>
+	</body>
+</html>
