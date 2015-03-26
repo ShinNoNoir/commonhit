@@ -47,6 +47,15 @@
 				data-name="live_heatmap"
 				data-for="lllplayer"
 				data-map="LIVE"></div>
+				
+			<p>How to include a dummy heat-map (for illustrative purposes):</p>
+			<script>
+				var dummyplayer = new LLL.HEATMAP.DummyPlayer(60);
+			</script>
+			<div class="lll-heatmap"
+				data-name="dummy_heatmap"
+				data-for="dummyplayer"
+				data-map="0,1"></div>
 			
 			<p>Attributes:</p>
 			<dl>
@@ -98,6 +107,7 @@ function handler(t) {
 
 var subscription1 = heatmap.addClickListener(handler);
 var subscription2 = live_heatmap.addClickListener(handler);
+var subscription3 = dummy_heatmap.addClickListener(handler);
 output.text('Now click on the heat-map')
 
 // removing the listener: <i>&lt;subscription&gt;</i>.dispose();
