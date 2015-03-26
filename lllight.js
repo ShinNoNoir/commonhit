@@ -113,7 +113,7 @@ LLL = {
 		self.ytplayer.addEventListener('onStateChange', function (evt) { self.onPlayerStateChange(evt); });
 		self.onPlayerStateChange( {'data': -1} );
 		
-		if (this.log_field_name !== undefined) {
+		if (this.log_field_name !== undefined && this.$log_field === undefined) {
 			var $node = $('<input type="hidden">').attr('name', this.log_field_name);
 			$node.insertAfter(this.ytplayer.getIframe());
 			this.$log_field = $node;
