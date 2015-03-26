@@ -55,8 +55,9 @@ HIT = {
 	HIT.HIT_ACCEPTED = !HIT.PREVIEW_MODE;
 	
 	
-	HIT.generateIdNames = function () {
-		$('div.hit-question').each(function() {
+	HIT.generateIdNames = function ($nodes) {
+		$nodes = ($nodes === undefined) ? $('div.hit-question') : $nodes;
+		$nodes.each(function() {
 			var $question = $(this);
 			var $labels = $question.find('label');
 			
@@ -127,8 +128,9 @@ HIT = {
 		}
 	};
 	
-	HIT.foreachTemplate = function () {
-		$('.hit-foreach').each(function() {
+	HIT.foreachTemplate = function ($nodes) {
+		$nodes = ($nodes === undefined) ? $('.hit-foreach') : $nodes;
+		$nodes.each(function() {
 			var $this = $(this);
 			
 			var template = $this.html();
