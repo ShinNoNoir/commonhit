@@ -58,6 +58,8 @@ HIT = {
 	HIT.generateIdNames = function () {
 		$('div.hit-question').each(function() {
 			var $question = $(this);
+			var $labels = $question.find('label');
+			
 			var name = 'Q-' + $question.data('name');
 			
 			$question.find('input').each(function (j) {
@@ -66,7 +68,7 @@ HIT = {
 				$this.attr('name', name)
 				     .attr('id', id);
 				
-				$question.find('label').eq(j).attr('for', id);
+				$labels.eq(j).attr('for', id);
 			});
 			$question.find('textarea').attr('name', name + '-explanation');
 		});
