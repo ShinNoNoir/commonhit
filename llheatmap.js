@@ -8,6 +8,17 @@ LLL.HEATMAP = {
 
 (function (LLL, HEATMAP, $) {
 	
+	HEATMAP.DummyPlayer = function(duration) {
+		this.duration = duration;
+	};
+	HEATMAP.DummyPlayer.prototype.getDuration = function() {
+		return this.duration;
+	};
+	HEATMAP.DummyPlayer.prototype.seek = function() {};
+	HEATMAP.DummyPlayer.prototype.getViewHistogram = function() {
+		return [0];
+	};
+	
 	HEATMAP.injectHeatmapsIntoDOM = function () {
 		var exec = function () {
 			$('.lll-heatmap:not(canvas)').each(function() {
