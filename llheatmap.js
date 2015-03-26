@@ -69,6 +69,8 @@ LLL.HEATMAP = {
 		this.width = width || HEATMAP.DEFAULT_WIDTH;
 		this.height = height || HEATMAP.DEFAULT_HEIGHT;
 		
+		this._clickEventListeners = [];
+		
 		$(this.canvas).prop({
 			width: this.width,
 			height: this.height
@@ -108,6 +110,11 @@ LLL.HEATMAP = {
 		var canvasOnClick = function(e) {
 			var t = self._eventToTimepoint(e, this);
 			self.lllplayer.seek(t);
+			
+			var handlers = self._clickEventListeners;
+			for(var i=0, n=handlers.length; i<n; i++) {
+				handlers[i].call(self, t);
+			}
 		};
 		$(this.canvas).click(canvasOnClick);
 		
@@ -122,6 +129,26 @@ LLL.HEATMAP = {
 			$(timecode).html(HEATMAP.timecodeToHHMMSS(t));
 		};
 		$(this.node).mousemove(updateTimeCode);
+	};
+	
+	HEATMAP.Heatmap.prototype.addClickListener = function(handler) {
+		var handlers = this._clickEventListeners;
+		handlers.push(handler);
+		
+		var self = this;
+		var disposed = false;
+		var subscription = {
+			dispose: function() {
+				if (!disposed) {
+					var pos = $.inArray(handler, handlers);
+					if (pos > -1) {
+						handlers.splice(pos, 1);
+					}
+					disposed = true;
+				}
+			}
+		}
+		return subscription;
 	};
 	
 	HEATMAP.Heatmap.prototype.paintHeatmap = function(heatmap, dontScale) {

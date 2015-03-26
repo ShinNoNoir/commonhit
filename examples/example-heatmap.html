@@ -77,7 +77,7 @@
 				<dd>Optional: Set a custom size for the heat-map.</dd>
 			</dl>
 			
-			<p>Scripting example:
+			<p>Scripting examples:
 				<script>
 					function runExample(id) {
 						eval($('#'+id).text());
@@ -86,6 +86,24 @@
 				<blockquote>
 					<pre id="scriptExample1">heatmap.paintHeatmap([0,0,0.8,0,0,1,0]);</pre>
 					<button type="button" onclick="runExample('scriptExample1');">Run example</button>
+				</blockquote>
+				<blockquote>
+					<pre id="scriptExample2">
+var output = $('#outputExample2'); 
+function handler(t) {
+	var name = $(this.node).data('name');
+	var t = LLL.HEATMAP.timecodeToHHMMSS(t);
+	output.text(name + ' ' + t + '\n' + output.text())
+}
+
+var subscription1 = heatmap.addClickListener(handler);
+var subscription2 = live_heatmap.addClickListener(handler);
+output.text('Now click on the heat-map')
+
+// removing the listener: <i>&lt;subscription&gt;</i>.dispose();
+</pre>
+					<textarea id="outputExample2" rows="5" cols="30"></textarea><br/ >
+					<button type="button" onclick="runExample('scriptExample2');">Run example</button>
 				</blockquote>
 			</p>
 		</div>
