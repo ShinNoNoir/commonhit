@@ -78,9 +78,14 @@
 			</dl>
 			
 			<p>Scripting example:
+				<script>
+					function runExample(id) {
+						eval($('#'+id).text());
+					}
+				</script>
 				<blockquote>
-					<pre>heatmap.paintHeatmap([0,0,0.8,0,0,1,0]);</pre>
-					<button type="button" onclick="heatmap.paintHeatmap([0,0,0.8,0,0,1,0]);">Run example</button>
+					<pre id="scriptExample1">heatmap.paintHeatmap([0,0,0.8,0,0,1,0]);</pre>
+					<button type="button" onclick="runExample('scriptExample1');">Run example</button>
 				</blockquote>
 			</p>
 		</div>
