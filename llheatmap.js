@@ -44,6 +44,12 @@ LLL.HEATMAP = {
 				if (exposed_name !== undefined) {
 					window[exposed_name] = heatmap;
 				}
+				
+				// experimental feature:
+				var oncreated = $heatmap_div.data('oncreated');
+				if (oncreated !== undefined) {
+					window[oncreated](heatmap);
+				}
 			});
 		};
 		
