@@ -226,7 +226,7 @@ LLL.HEATMAP = {
 		}
 	};
 	
-	HEATMAP.timecodeToHHMMSS = function(t) {
+	HEATMAP.timecodeToHHMMSS = function(t, forceHours) {
 		var hours = Math.floor(t / 3600);
 		t -= hours*3600;
 		var minutes = Math.floor(t / 60);
@@ -237,7 +237,7 @@ LLL.HEATMAP = {
 		var mm = (minutes < 10) ? ('0'+minutes) : minutes;
 		var ss = (seconds < 10) ? ('0'+seconds) : seconds;
 		
-		return ((hours > 0) ? (hh+':') : '') + mm+':'+ss; 
+		return ((hours > 0 || forceHours) ? (hh+':') : '') + mm+':'+ss; 
 	};
 	
 	HEATMAP._scaleArray = function (data, newSize) {
