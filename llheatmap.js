@@ -208,6 +208,11 @@ LLL.HEATMAP = {
 		return heatmap;
 	};
 	
+	HEATMAP.Heatmap.prototype.showHeatmapOf = function(lllplayer) {
+		this.map = this.heatmapFromViewHistogram(lllplayer.getViewHistogram());
+		this.paintHeatmap(this.map);
+	};
+	
 	HEATMAP.Heatmap.prototype.showLiveHeatmap = function(show) {
 		show = (show === undefined) || show;
 		
@@ -216,8 +221,7 @@ LLL.HEATMAP = {
 			this.live_map_timer = window.setInterval(function () {
 				if (!self.lllplayer.ready)
 					return;
-				self.map = self.heatmapFromViewHistogram(self.lllplayer.getViewHistogram());
-				self.paintHeatmap( self.map );
+				self.showHeatmapOf(self.lllplayer);
 			}, 500);
 		}
 		else if (!show && this.live_map_timer !== undefined) {
