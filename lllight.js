@@ -113,6 +113,10 @@ LLL = {
 		self.ytplayer.addEventListener('onStateChange', function (evt) { self.onPlayerStateChange(evt); });
 		self.onPlayerStateChange( {'data': -1} );
 		
+		this._createLogField();
+	};
+	LLL.Player.prototype._createLogField = function() {
+		// Note: does not check whether the field already exists
 		if (this.log_field_name !== undefined && this.$log_field === undefined) {
 			var $node = $('<input type="hidden">').attr('name', this.log_field_name);
 			$node.insertAfter(this.ytplayer.getIframe());
