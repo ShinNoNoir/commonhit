@@ -36,6 +36,12 @@ LLL.HEATMAP = {
 		}
 	};
 	
+	// (May only be called after YouTube API is ready)
+	HEATMAP.createHeatmapAndDiv = function(lllplayer, map, width, height) {
+		var heatmap_div = $('<div class="lll-heatmap">');
+		return new HEATMAP.Heatmap(heatmap_div, lllplayer, map, width, height);
+	};
+	
 	HEATMAP._setupHeatmapDiv = function(id_or_node) {
 		var exec = function () {
 			var heatmap_div = ('string' == typeof id_or_node) ? document.getElementById(id_or_node) : id_or_node;
