@@ -341,7 +341,11 @@ LLL = {
 		if (allowSeekAhead === undefined) {
 			allowSeekAhead = true;
 		}
-		this.ytplayer.seekTo(timepoint, allowSeekAhead || false);
+		
+		if (this.ytplayer.getPlayerState() == -1)
+			this.ytplayer.loadVideoById(this.video_id, timepoint);
+		else
+			this.ytplayer.seekTo(timepoint, allowSeekAhead || false);
 	};
 	
 	LLL.Player.prototype.getDuration = function() {
