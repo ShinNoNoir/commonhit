@@ -325,6 +325,17 @@ LLL = {
 		return res;
 	};
 	
+	LLL.Player.prototype.newSession = function(log_field) {
+		this.log_field_name = log_field;
+		this.$log_field = undefined; // set/created when ready
+		this.eventlog = [];
+		this.eventlog_serialized_prefix = ''; // everything except the last two events
+		this.eventlog_serialized_prefix_length = 0;
+		
+		if (this.ready)
+			this._createLogField();
+	};
+	
 	
 	LLL.Player.prototype.play = function() { 
 		this._setTicker();
