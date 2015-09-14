@@ -22,35 +22,51 @@ LLL.HEATMAP = {
 	HEATMAP.injectHeatmapsIntoDOM = function () {
 		var exec = function () {
 			$('.lll-heatmap:not(canvas)').each(function() {
-				var $heatmap_div = $(this);
-				
-				var lllplayer_exposed_name = $heatmap_div.data('for');
-				var map = [];
-				var width = $heatmap_div.data('width');
-				var height = $heatmap_div.data('height');
-				
-				var live_map;
-				var data_map = $heatmap_div.data('map') || '';
-				if (!(live_map = (data_map.toUpperCase() === 'LIVE'))) {
-					map = HEATMAP._parseFloatList(data_map);
-				}
-				
-				var lllplayer = window[lllplayer_exposed_name];
-				var exposed_name = $heatmap_div.data('name');
-				
-				var heatmap = new HEATMAP.Heatmap(this, lllplayer, map, width, height);
-				heatmap.showLiveHeatmap(live_map);
-				
-				if (exposed_name !== undefined) {
-					window[exposed_name] = heatmap;
-				}
-				
-				// experimental feature:
-				var oncreated = $heatmap_div.data('oncreated');
-				if (oncreated !== undefined) {
-					window[oncreated](heatmap);
-				}
+				HEATMAP._setupHeatmapDiv(this);
 			});
+		};
+		
+		// NOTE: An lllplayer is created *after* the YouTube API has loaded.
+		// Since heat-maps depend on an lllplayer, execution needs to be deferred as well.
+		if (LLL._ytReady) {
+			exec();
+		}
+		else {
+			LLL._creationQueue.push(exec);
+		}
+	};
+	
+	HEATMAP._setupHeatmapDiv = function(id_or_node) {
+		var exec = function () {
+			var heatmap_div = ('string' == typeof id_or_node) ? document.getElementById(id_or_node) : id_or_node;
+			var $heatmap_div = $(heatmap_div);
+			
+			var lllplayer_exposed_name = $heatmap_div.data('for');
+			var map = [];
+			var width = $heatmap_div.data('width');
+			var height = $heatmap_div.data('height');
+			
+			var live_map;
+			var data_map = $heatmap_div.data('map') || '';
+			if (!(live_map = (data_map.toUpperCase() === 'LIVE'))) {
+				map = HEATMAP._parseFloatList(data_map);
+			}
+			
+			var lllplayer = window[lllplayer_exposed_name];
+			var exposed_name = $heatmap_div.data('name');
+			
+			var heatmap = new HEATMAP.Heatmap(heatmap_div, lllplayer, map, width, height);
+			heatmap.showLiveHeatmap(live_map);
+			
+			if (exposed_name !== undefined) {
+				window[exposed_name] = heatmap;
+			}
+			
+			// experimental feature:
+			var oncreated = $heatmap_div.data('oncreated');
+			if (oncreated !== undefined) {
+				window[oncreated](heatmap);
+			}
 		};
 		
 		// NOTE: An lllplayer is created *after* the YouTube API has loaded.
