@@ -12,6 +12,7 @@ LLL = {
 
 (function (LLL, $) {
 	LLL._creationQueue = [];
+	LLL._durationCache = {};
 	
 	LLL.loadYouTubeAPI = function() {
 		var tag = document.createElement('script');
@@ -350,7 +351,9 @@ LLL = {
 	
 	LLL.Player.prototype.getDuration = function() {
 		// Note: this returns an approximation (int) when playback has not yet started
-		return this.ytplayer.getDuration();
+		var d = this.ytplayer.getDuration();
+		return (!d || d <= 0) ? (LLL._durationCache[this.video_id] || 0) 
+		                      : (LLL._durationCache[this.video_id] = d);
 	};
 	
 	LLL.Player.prototype.getCurrentTime = function() {
