@@ -128,24 +128,41 @@ HIT = {
 		}
 	};
 	
+	HIT.Template = function(node, template) {
+		this.node = node;
+		this.$node = $(node);
+		this.template = (template === undefined) ? $node.data('template') : template;
+		this.$node.data('template', this.template);
+		
+		HIT.Template.list.push(this);
+		HIT.Template.byNode[node] = this;
+		if (node.id)
+			HIT.Template.byId[node.id] = this;
+	};
+	HIT.Template.prototype.addItem = function(item) {
+		var s = this.template.replace(/\{\{(.+?)\}\}/gi, function(match, p1) {
+			var value = item[p1];
+			return value === undefined ? match : item[p1];
+		});
+		this.$node.before(s);
+	};
+	HIT.Template.byNode = {};
+	HIT.Template.byId = {};
+	HIT.Template.list = [];
+	
 	HIT.foreachTemplate = function ($nodes) {
 		$nodes = ($nodes === undefined) ? $('.hit-foreach') : $nodes;
 		$nodes.each(function() {
 			var $this = $(this);
+			var template_string = $this.html();
+			var template = new HIT.Template(this, template_string);
 			
-			var template = $this.html();
 			var func_name = $this.data('func');
 			var elements = func_name ? window[func_name]() : [];
 			
 			$.each(elements, function(_, el) {
-				var s = template.replace(/\{\{(.+?)\}\}/gi, function(match, p1) {
-					var value = el[p1];
-					return value === undefined ? match : el[p1];
-				});
-				$this.before(s);
-			})
-			
-			$this.data('template', template);
+				template.addItem(el);
+			});
 		}).empty();
 	};
 	
