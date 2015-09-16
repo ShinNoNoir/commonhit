@@ -22,35 +22,57 @@ LLL.HEATMAP = {
 	HEATMAP.injectHeatmapsIntoDOM = function () {
 		var exec = function () {
 			$('.lll-heatmap:not(canvas)').each(function() {
-				var $heatmap_div = $(this);
-				
-				var lllplayer_exposed_name = $heatmap_div.data('for');
-				var map = [];
-				var width = $heatmap_div.data('width');
-				var height = $heatmap_div.data('height');
-				
-				var live_map;
-				var data_map = $heatmap_div.data('map') || '';
-				if (!(live_map = (data_map.toUpperCase() === 'LIVE'))) {
-					map = HEATMAP._parseFloatList(data_map);
-				}
-				
-				var lllplayer = window[lllplayer_exposed_name];
-				var exposed_name = $heatmap_div.data('name');
-				
-				var heatmap = new HEATMAP.Heatmap(this, lllplayer, map, width, height);
-				heatmap.showLiveHeatmap(live_map);
-				
-				if (exposed_name !== undefined) {
-					window[exposed_name] = heatmap;
-				}
-				
-				// experimental feature:
-				var oncreated = $heatmap_div.data('oncreated');
-				if (oncreated !== undefined) {
-					window[oncreated](heatmap);
-				}
+				HEATMAP._setupHeatmapDiv(this);
 			});
+		};
+		
+		// NOTE: An lllplayer is created *after* the YouTube API has loaded.
+		// Since heat-maps depend on an lllplayer, execution needs to be deferred as well.
+		if (LLL._ytReady) {
+			exec();
+		}
+		else {
+			LLL._creationQueue.push(exec);
+		}
+	};
+	
+	// (May only be called after YouTube API is ready)
+	HEATMAP.createHeatmapAndDiv = function(lllplayer, map, width, height) {
+		var heatmap_div = $('<div class="lll-heatmap">');
+		return new HEATMAP.Heatmap(heatmap_div, lllplayer, map, width, height);
+	};
+	
+	HEATMAP._setupHeatmapDiv = function(id_or_node) {
+		var exec = function () {
+			var heatmap_div = ('string' == typeof id_or_node) ? document.getElementById(id_or_node) : id_or_node;
+			var $heatmap_div = $(heatmap_div);
+			
+			var lllplayer_exposed_name = $heatmap_div.data('for');
+			var map = [];
+			var width = $heatmap_div.data('width');
+			var height = $heatmap_div.data('height');
+			
+			var live_map;
+			var data_map = $heatmap_div.data('map') || '';
+			if (!(live_map = (data_map.toUpperCase() === 'LIVE'))) {
+				map = HEATMAP._parseFloatList(data_map);
+			}
+			
+			var lllplayer = window[lllplayer_exposed_name];
+			var exposed_name = $heatmap_div.data('name');
+			
+			var heatmap = new HEATMAP.Heatmap(heatmap_div, lllplayer, map, width, height);
+			heatmap.showLiveHeatmap(live_map);
+			
+			if (exposed_name !== undefined) {
+				window[exposed_name] = heatmap;
+			}
+			
+			// experimental feature:
+			var oncreated = $heatmap_div.data('oncreated');
+			if (oncreated !== undefined) {
+				window[oncreated](heatmap);
+			}
 		};
 		
 		// NOTE: An lllplayer is created *after* the YouTube API has loaded.
@@ -208,6 +230,11 @@ LLL.HEATMAP = {
 		return heatmap;
 	};
 	
+	HEATMAP.Heatmap.prototype.showHeatmapOf = function(lllplayer) {
+		this.map = this.heatmapFromViewHistogram(lllplayer.getViewHistogram());
+		this.paintHeatmap(this.map);
+	};
+	
 	HEATMAP.Heatmap.prototype.showLiveHeatmap = function(show) {
 		show = (show === undefined) || show;
 		
@@ -216,8 +243,7 @@ LLL.HEATMAP = {
 			this.live_map_timer = window.setInterval(function () {
 				if (!self.lllplayer.ready)
 					return;
-				self.map = self.heatmapFromViewHistogram(self.lllplayer.getViewHistogram());
-				self.paintHeatmap( self.map );
+				self.showHeatmapOf(self.lllplayer);
 			}, 500);
 		}
 		else if (!show && this.live_map_timer !== undefined) {
