@@ -103,14 +103,32 @@
 		<h2>Scripting</h2>
 		<div>
 			<p>
-				TODO: test new things.
-				First, empty data-func
+				Templates can be given an <code>id</code>, 
+				such that you can add new instances within a script: 
 			</p>
-			<div class="hit-question"  data-name="RandomizedList">
-				<div class="hit-foreach" >
+							<script>
+					function runExample(id) {
+						eval($('#'+id).text());
+					}
+				</script>
+				<blockquote>
+					<pre id="scriptExample">
+window.counter = (window.counter || 0) + 1;
+
+HIT.Template.byId['scriptedForeach'].addItem({
+	value: counter,
+	label: 'Vote for ' + counter
+});
+HIT.generateIdNames($('#ScriptedList'));
+</pre>
+				</blockquote>
+			<div class="hit-question"  data-name="ScriptedList" id="ScriptedList">
+				<div class="hit-foreach" id="scriptedForeach">
 					<input type="radio" value="{{value}}" /><label>{{label}}</label><br />
 				</div>
 			</div>
+			<br />
+			<button type="button" onclick="runExample('scriptExample');">Add item to ScriptedList</button>
 		</div>
 	</body>
 </html>
