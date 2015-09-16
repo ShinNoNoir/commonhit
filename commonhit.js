@@ -144,6 +144,8 @@ HIT = {
 				});
 				$this.before(s);
 			})
+			
+			$this.data('template', template);
 		}).empty();
 	};
 	
