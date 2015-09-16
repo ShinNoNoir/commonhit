@@ -134,7 +134,8 @@ HIT = {
 			var $this = $(this);
 			
 			var template = $this.html();
-			var elements = window[$this.data('func')]();
+			var func_name = $this.data('func');
+			var elements = func_name ? window[func_name]() : [];
 			
 			$.each(elements, function(_, el) {
 				var s = template.replace(/\{\{(.+?)\}\}/gi, function(match, p1) {
