@@ -12,6 +12,7 @@ LLL = {
 
 (function (LLL, $) {
 	LLL._creationQueue = [];
+	LLL._durationCache = {};
 	
 	LLL.loadYouTubeAPI = function() {
 		var tag = document.createElement('script');
@@ -113,6 +114,10 @@ LLL = {
 		self.ytplayer.addEventListener('onStateChange', function (evt) { self.onPlayerStateChange(evt); });
 		self.onPlayerStateChange( {'data': -1} );
 		
+		this._createLogField();
+	};
+	LLL.Player.prototype._createLogField = function() {
+		// Note: does not check whether the field already exists
 		if (this.log_field_name !== undefined && this.$log_field === undefined) {
 			var $node = $('<input type="hidden">').attr('name', this.log_field_name);
 			$node.insertAfter(this.ytplayer.getIframe());
@@ -320,6 +325,17 @@ LLL = {
 		return res;
 	};
 	
+	LLL.Player.prototype.newSession = function(log_field) {
+		this.log_field_name = log_field;
+		this.$log_field = undefined; // set/created when ready
+		this.eventlog = [];
+		this.eventlog_serialized_prefix = ''; // everything except the last two events
+		this.eventlog_serialized_prefix_length = 0;
+		
+		if (this.ready)
+			this._createLogField();
+	};
+	
 	
 	LLL.Player.prototype.play = function() { 
 		this._setTicker();
@@ -337,12 +353,18 @@ LLL = {
 		if (allowSeekAhead === undefined) {
 			allowSeekAhead = true;
 		}
-		this.ytplayer.seekTo(timepoint, allowSeekAhead || false);
+		
+		if (this.ytplayer.getPlayerState() == -1)
+			this.ytplayer.loadVideoById(this.video_id, timepoint);
+		else
+			this.ytplayer.seekTo(timepoint, allowSeekAhead || false);
 	};
 	
 	LLL.Player.prototype.getDuration = function() {
 		// Note: this returns an approximation (int) when playback has not yet started
-		return this.ytplayer.getDuration();
+		var d = this.ytplayer.getDuration();
+		return (!d || d <= 0) ? (LLL._durationCache[this.video_id] || 0) 
+		                      : (LLL._durationCache[this.video_id] = d);
 	};
 	
 	LLL.Player.prototype.getCurrentTime = function() {

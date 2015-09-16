@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CommonHIT new session example</title>
+	</head>
+	<body>
+		<!--
+			Note that normally you put this in the <head> of a document,
+			but Amazon's web editor only allows you to edit the (form) body of a HIT.
+		-->
+		<link href="../commonhit.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../commonhit.js"></script>
+		<script type="text/javascript" src="../lllight.js"></script>
+		<script type="text/javascript" src="../llheatmap.js"></script>
+		<Header>
+			<h1>CommonHIT new session example</h1>
+		</Header>
+		<style>
+			#heatmapList:empty:after {
+				content: "(none yet)";
+				font-style: italic;
+			}
+		</style>
+		<div class="intro">
+			<p>
+			This is a short example of how to use a single video player,
+			but record multiple, separate interaction sessions.
+			</p>
+		</div>
+		<div>
+			<p>First, include the YouTube player.
+				Here, we use <code>data-name="lllplayer"</code>.
+				Then, whenever you want to start a new session,
+				<code>stop()</code> the player, 
+				followed by <code>newSession(log_field_name)</code>.
+				For details, see the code at the bottom of the page.
+			</p>
+			<div id="ytplayer" 
+				class="lll-player" 
+				data-video-id="ogtG0ZKQOq4" 
+				data-log-field="events_1" 
+				data-name="lllplayer">
+			</div>
+		</div>
+		
+		<div>
+			<p>Live heat-map:</p>
+			<div class="lll-heatmap"
+				data-name="live_heatmap"
+				data-for="lllplayer"
+				data-map="LIVE"></div>
+			
+			<br />
+			
+			<button type="button" onclick="runExample('scriptExample');">New session</button>
+			
+			<p>
+				Past heat-maps:
+				<div id="heatmapList"></div>
+			</p>
+			
+			<hr />
+			
+			<p>Code executed when creating a new session::
+				<script>
+					function runExample(id) {
+						eval($('#'+id).text());
+					}
+				</script>
+				<blockquote>
+					<pre id="scriptExample">
+// Required: Call stop():
+lllplayer.stop();
+
+// Preferably, pick a new name for the log field (initial name is 'events_1'):
+var name_counter = lllplayer.log_field_name.split('_');
+var new_name = name_counter[0] + '_' + (Number.parseInt(name_counter[1])+1);
+
+var heatmap = LLL.HEATMAP.createHeatmapAndDiv(lllplayer, []);
+heatmap.showHeatmapOf(lllplayer);
+$('#heatmapList').prepend(heatmap.node);
+
+// Call newSession():
+lllplayer.newSession(new_name)
+</pre>
+				</blockquote>
+			</p>
+		</div>
+	</body>
+</html>
