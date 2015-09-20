@@ -19,6 +19,11 @@
 				width: 2.5em;
 				text-align: right;
 			}
+			
+			#annotationsList .emptyListMessage {
+				margin: 8px;
+				font-style: italic;
+			}
 			#annotationsList button.delete {
 				color: red;
 				font-weight: bold;
@@ -32,12 +37,14 @@
 			#annotationsList .dynamic-hit-question {
 				margin-bottom: 5px;
 				margin-top: 10px;
+				background: lavender;
+				padding: 5px;
 			}
 			
 			a.play {
 				text-decoration: none;
 				color: blue;
-				margin-left: 2em;
+				margin-left: 1em;
 				width: 4em;
 				text-align: right;
 				display: inline-block;
@@ -105,6 +112,12 @@
 				if (newTime < 0) newTime = 0;
 				else if (newTime > lllplayer.getDuration()) newTime = lllplayer.getDuration();
 				
+				setAnnotationTime($annotationNode, newTime);
+			}
+			
+			function syncTime(button) {
+				$annotationNode = $(button).parents('.dynamic-hit-question');
+				var newTime = lllplayer.getCurrentTime();
 				setAnnotationTime($annotationNode, newTime);
 			}
 			
@@ -215,6 +228,7 @@
 								<input data-name="time-mm" value="00" type="number" min="0" max="59" class="mm" maxlength="2" />m
 								<input data-name="time-ss" value="00" type="number" min="0" max="59" class="ss" maxlength="2" />s
 								<button type="button" onclick="incTime(this, 5);">+5s</button>
+								<button type="button" onclick="syncTime(this);">Sync with player</button>
 								<a href="#ytplayer" class="play" onclick="previewAnnotationMoment(this)">&#9658; View</a>
 							</div> 
 							<textarea data-name="text" placeholder="Your annotation here please"
