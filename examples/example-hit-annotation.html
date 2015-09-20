@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Example HIT for video annotation</title>
+	</head>
+	<body>
+		<!--
+			Note that normally you put this in the <head> of a document,
+			but Amazon's web editor only allows you to edit the (form) body of a HIT.
+		-->
+		<link href="../commonhit.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../commonhit.js"></script>
+		<script type="text/javascript" src="../lllight.js"></script>
+		<script type="text/javascript" src="../llheatmap.js"></script>
+		<style>
+			input.hh, input.mm, input.ss {
+				width: 2.5em;
+				text-align: right;
+			}
+			button.delete {
+				color: red;
+				font-weight: bold;
+			}
+			#annotationsList textarea {
+				vertical-align: top;
+			}
+			#annotationsList .dynamic-hit-question {
+				margin-bottom: 5px;
+			}
+		</style>
+		<script type="text/javascript">
+			var lllplayer; // declare but do not initialize
+			
+			function stopAndMovePlayer() {
+				lllplayer.stop();
+				heatmap.showHeatmapOf(lllplayer);
+				lllplayer.newSession('events_step2');
+				$('#videoContainer').empty().append( $('#videoPlayer').detach() );
+			}
+			
+			function addNewAnnotation() {
+				$('#annotationsList .emptyListMessage').hide();
+				HIT.Template.byId['annotationTemplate'].addItem({
+					foo: 'bar'
+				});
+				var $newAnnotation = $('#annotationsList .dynamic-hit-question').last();
+				var showHours = lllplayer.getDuration() >= 3600;
+				$newAnnotation.find('span.hh').toggle(showHours);
+				
+				setAnnotationTime($newAnnotation, lllplayer.getCurrentTime());
+				generateNames($('#annotationsList .dynamic-hit-question'));
+			}
+			
+			function generateNames($questions) {
+				$questions.each(function (idx, element) {
+					var $element = $(element);
+					var questionName = $element.data('name');
+					$(element).find('input, textarea').each(function (_, fieldElement) {
+						var $field = $(fieldElement)
+						var fieldName = $field.data('name');
+						$field.attr('name', questionName+'-'+(idx+1)+'-'+fieldName);
+					});
+				});
+			}
+			
+			function setAnnotationTime($annotationNode, seconds) {
+				var parts = LLL.HEATMAP.timecodeToHHMMSS(seconds, true).split(':');
+				
+				$annotationNode.find('input.hh').val(parts[0]);
+				$annotationNode.find('input.mm').val(parts[1]);
+				$annotationNode.find('input.ss').val(parts[2]);
+			}
+			
+			function removeAnnotation(button) {
+				$(button).parent().remove();
+				generateNames($('#annotationsList .dynamic-hit-question'));
+			}
+			
+		</script>
+		
+		<div class="hit-debug-only">
+			<button type="button" onclick="$('.hit-step').show(); $(this).hide();">[debug: expand all steps]</button>
+		</div>
+		
+		<header>
+			<h1>Example HIT for video annotation</h1>
+		</header>
+		<div class="intro">
+			<p>
+			This is a more complete example of a HIT
+			demonstrating how you can use CommonHIT for tasks like video annotation. 
+			</p>
+		</div>
+		
+		<div id="questions" class="hit-steps">
+			<h2 style="margin-bottom: 0">Task</h2>
+			<div class="question-group hit-step" data-step="0">
+				<h3>Instructions</h3>
+				<p>
+					Instructions here.
+				</p>
+				
+				<h4>Ready?</h4>
+				<p>
+					Make sure you have carefully read the instructions before you continue.
+				</p>
+				<div class="hit-preview-only">
+					<button type="button" onclick="return;">You must accept the task first</button>
+				</div>
+				<div class="hit-accept-only">
+					<button type="button" onclick="HIT.nextStep();">Start the task</button>
+				</div>
+			</div>
+			
+			<div class="question-group hit-step" data-step="1">
+				<h3>Step 1: Watching the video</h3>
+				<p>
+					Instruct the workers to watch the video below.
+				</p>
+				<hr />
+				<div id="videoPlayer">
+					<div id="ytplayer" class="lll-player" 
+						data-video-id="${VIDEO}" data-log-field="events_step1" data-name="lllplayer"
+						data-width="625" data-height="350"> 
+					</div>
+				</div>
+				
+				<p>
+					When you're done watching the video, 
+					click the button below to continue.
+					<em>
+						We ask you to watch the video for at least two minutes (watching more is fine). 
+						Please make sure that you have had a look at several different parts of the video during that time.
+					</em>
+				</p>
+				
+				
+				<button type="button" onclick="stopAndMovePlayer(); HIT.nextStep();">Continue to step 3</button>
+			</div>
+			
+			<div class="question-group hit-step" data-step="2">
+				<p>
+					You have just watched the video according to our instructions.
+					We show the same video below.
+					This time, please add annotations to the video.
+				</p>
+				<div id="videoContainer">
+					(The JavaScript function stopAndMovePlayer() will move the player 
+					from the previous step to here.)
+				</div>
+				Your viewing history:
+				<div class="lll-heatmap"
+					data-name="heatmap"
+					data-for="lllplayer"
+					data-width="625" ></div>
+				
+				<button type="button" onclick="addNewAnnotation();">Add new annotation</button>
+				<div id="annotationsList">
+					<div class="emptyListMessage">
+						This list is empty.
+						Will be removed when addNewAnnotation.
+					</div>
+					<!-- NOTE: input type=number does not work in IE9 and earlier -->
+					<div id="annotationTemplate" class="hit-foreach">
+						<div class="dynamic-hit-question" data-name="Annotation">
+							<button type="button" class="delete" onclick="removeAnnotation(this);">x</button> 
+							<span class="hh">
+								<input data-name="time-hh" value="0" type="number" min="0" class="mm" maxlength="2" />h
+							</span>
+							<input data-name="time-mm" value="00" type="number" min="0" max="59" class="mm" maxlength="2" />m
+							<input data-name="time-ss" value="00" type="number" min="0" max="59" class="ss" maxlength="2" />s
+							<textarea data-name="text" placeholder="Your annotation here please"
+								cols="60" rows="4"></textarea>
+						</div>
+					</div>
+				</div>
+				<p>
+					Please review your response to make sure that you have answered all questions. 
+					Then, when you are sure that you have completed this step, click the button below. 
+					<em>
+						Once you have clicked the button, it is not possible to go back and change your answers.
+					</em>
+				</p>
+				<button type="button" onclick="lllplayer.stop(); HIT.nextStep();">Finish task</button>
+			</div>
+			
+			<div class="question-group hit-step" data-step="100">
+				<p>
+					Thank you, you have reached the end of this HIT.
+					You can now submit your assignment by clicking the submit button at the bottom.
+				</p>
+			</div>
+		</div>
+		<div id="problems" class="hit-accept-only" >
+			<h2>General feedback</h2>
+			If you encounter any problems with this HIT 
+			or have any other comments, 
+			please report them here.
+			You can also use this textbox to tell us if you liked this HIT
+			or have any suggestions.
+			<textarea cols="80" rows="3" name="problems"></textarea>
+			<input type="hidden" class="hit-browser-ua" name="browser" />
+			<input type="hidden" class="hit-html5-video-support" name="html5video" />
+			<input type="hidden" class="hit-screen-resolution" name="screenresolution" />
+		</div> 
+	</body>
+	<script type="text/javascript">
+		HIT.DEBUG_VARS = {
+			'${VIDEO}': 'ogtG0ZKQOq4'
+			//'${VIDEO}': 'vWCW4w-a-cI'
+		};
+	</script>
+</html>
