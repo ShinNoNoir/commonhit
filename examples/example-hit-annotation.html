@@ -31,7 +31,21 @@
 			}
 			#annotationsList .dynamic-hit-question {
 				margin-bottom: 5px;
+				margin-top: 10px;
 			}
+			
+			a.play {
+				text-decoration: none;
+				color: blue;
+				margin-left: 2em;
+				width: 4em;
+				text-align: right;
+				display: inline-block;
+			}
+			a.play:hover {
+				color: red;
+			}
+			a.play:visited {}
 		</style>
 		<script type="text/javascript">
 			var lllplayer; // declare but do not initialize
@@ -92,6 +106,12 @@
 				else if (newTime > lllplayer.getDuration()) newTime = lllplayer.getDuration();
 				
 				setAnnotationTime($annotationNode, newTime);
+			}
+			
+			function previewAnnotationMoment(anchor) {
+				$annotationNode = $(anchor).parents('.dynamic-hit-question');
+				var t = getAnnotationTime($annotationNode);
+				lllplayer.seek(t);
 			}
 			
 			function removeAnnotation(button) {
@@ -195,6 +215,7 @@
 								<input data-name="time-mm" value="00" type="number" min="0" max="59" class="mm" maxlength="2" />m
 								<input data-name="time-ss" value="00" type="number" min="0" max="59" class="ss" maxlength="2" />s
 								<button type="button" onclick="incTime(this, 5);">+5s</button>
+								<a href="#ytplayer" class="play" onclick="previewAnnotationMoment(this)">&#9658; View</a>
 							</div> 
 							<textarea data-name="text" placeholder="Your annotation here please"
 								cols="60" rows="4"></textarea>
