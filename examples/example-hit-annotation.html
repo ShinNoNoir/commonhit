@@ -19,9 +19,12 @@
 				width: 2.5em;
 				text-align: right;
 			}
-			button.delete {
+			#annotationsList button.delete {
 				color: red;
 				font-weight: bold;
+			}
+			#annotationsList .timecontrol {
+				display: inline-block;
 			}
 			#annotationsList textarea {
 				vertical-align: top;
@@ -71,6 +74,24 @@
 				$annotationNode.find('input.hh').val(parts[0]);
 				$annotationNode.find('input.mm').val(parts[1]);
 				$annotationNode.find('input.ss').val(parts[2]);
+			}
+			
+			function getAnnotationTime($annotationNode) {
+				return (
+					Number.parseInt($annotationNode.find('input.hh').val(), 10) * 3600
+					+ Number.parseInt($annotationNode.find('input.mm').val(), 10) * 60 
+					+ Number.parseInt($annotationNode.find('input.ss').val(), 10)
+				);
+			}
+			
+			function incTime(button, delta) {
+				$annotationNode = $(button).parents('.dynamic-hit-question');
+				var newTime = getAnnotationTime($annotationNode) + delta;
+				
+				if (newTime < 0) newTime = 0;
+				else if (newTime > lllplayer.getDuration()) newTime = lllplayer.getDuration();
+				
+				setAnnotationTime($annotationNode, newTime);
 			}
 			
 			function removeAnnotation(button) {
@@ -165,12 +186,16 @@
 					<!-- NOTE: input type=number does not work in IE9 and earlier -->
 					<div id="annotationTemplate" class="hit-foreach">
 						<div class="dynamic-hit-question" data-name="Annotation">
-							<button type="button" class="delete" onclick="removeAnnotation(this);">x</button> 
-							<span class="hh">
-								<input data-name="time-hh" value="0" type="number" min="0" class="mm" maxlength="2" />h
-							</span>
-							<input data-name="time-mm" value="00" type="number" min="0" max="59" class="mm" maxlength="2" />m
-							<input data-name="time-ss" value="00" type="number" min="0" max="59" class="ss" maxlength="2" />s
+							<button type="button" class="delete" onclick="removeAnnotation(this);">x</button>
+							<div class="timecontrol">
+								<button type="button" onclick="incTime(this, -5);">-5s</button>
+								<span class="hh">
+									<input data-name="time-hh" value="0" type="number" min="0" class="hh" maxlength="2" />h
+								</span>
+								<input data-name="time-mm" value="00" type="number" min="0" max="59" class="mm" maxlength="2" />m
+								<input data-name="time-ss" value="00" type="number" min="0" max="59" class="ss" maxlength="2" />s
+								<button type="button" onclick="incTime(this, 5);">+5s</button>
+							</div> 
 							<textarea data-name="text" placeholder="Your annotation here please"
 								cols="60" rows="4"></textarea>
 						</div>
