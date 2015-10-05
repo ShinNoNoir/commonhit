@@ -78,6 +78,7 @@
 			}
 			
 			function generateNames($questions) {
+				var lastIdx = -1;
 				$questions.each(function (idx, element) {
 					var $element = $(element);
 					var questionName = $element.data('name');
@@ -86,7 +87,9 @@
 						var fieldName = $field.data('name');
 						$field.attr('name', questionName+'-'+(idx+1)+'-'+fieldName);
 					});
+					lastIdx = idx;
 				});
+				$('#NumAnnotations').val(lastIdx + 1);
 			}
 			
 			function setAnnotationTime($annotationNode, seconds) {
@@ -211,6 +214,7 @@
 					data-width="625" ></div>
 				
 				<button type="button" onclick="addNewAnnotation();">Add new annotation</button>
+				<input value="0" type="hidden" name="NumAnnotations" id="NumAnnotations" />
 				<div id="annotationsList">
 					<div class="emptyListMessage">
 						This list is empty.
