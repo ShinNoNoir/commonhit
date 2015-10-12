@@ -135,7 +135,7 @@ HIT = {
 		this.$node.data('template', this.template);
 		
 		HIT.Template.list.push(this);
-		HIT.Template.byNode[node] = this;
+		this.$node.data('commonhit-template-object', this);
 		if (node.id)
 			HIT.Template.byId[node.id] = this;
 	};
@@ -146,7 +146,9 @@ HIT = {
 		});
 		this.$node.before(s);
 	};
-	HIT.Template.byNode = {};
+	HIT.Template.byNode = function (node) {
+		return $(node).data('commonhit-template-object');
+	};
 	HIT.Template.byId = {};
 	HIT.Template.list = [];
 	
