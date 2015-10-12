@@ -72,7 +72,7 @@
 				$(querySelector + ' .emptyListMessage').hide();
 				
 				var templateNode = $(querySelector + ' .annotation-template').get(0);
-				HIT.Template.byNode[templateNode].addItem({/* empty object */});
+				HIT.Template.byNode(templateNode).addItem({/* empty object */});
 				
 				var $newAnnotation = $(querySelector + ' .dynamic-hit-question').last();
 				var showHours = lllplayer.getDuration() >= 3600;
