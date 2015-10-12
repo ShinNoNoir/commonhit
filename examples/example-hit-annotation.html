@@ -64,20 +64,21 @@
 				$('#videoContainer').empty().append( $('#videoPlayer').detach() );
 			}
 			
-			function addNewAnnotation() {
-				$('#annotationsList .emptyListMessage').hide();
+			function addNewAnnotation(querySelector) {
+				$(querySelector + ' .emptyListMessage').hide();
 				HIT.Template.byId['annotationTemplate'].addItem({
 					foo: 'bar'
 				});
-				var $newAnnotation = $('#annotationsList .dynamic-hit-question').last();
+				var $newAnnotation = $(querySelector + ' .dynamic-hit-question').last();
 				var showHours = lllplayer.getDuration() >= 3600;
 				$newAnnotation.find('span.hh').toggle(showHours);
 				
 				setAnnotationTime($newAnnotation, lllplayer.getCurrentTime());
-				generateNames($('#annotationsList .dynamic-hit-question'));
+				$numAnnotations = $(querySelector + ' .num-annotations');
+				generateNames($(querySelector + ' .dynamic-hit-question'), $numAnnotations);
 			}
 			
-			function generateNames($questions) {
+			function generateNames($questions, $numAnnotations) {
 				var lastIdx = -1;
 				$questions.each(function (idx, element) {
 					var $element = $(element);
@@ -89,7 +90,7 @@
 					});
 					lastIdx = idx;
 				});
-				$('#NumAnnotations').val(lastIdx + 1);
+				$numAnnotations.val(lastIdx + 1);
 			}
 			
 			function setAnnotationTime($annotationNode, seconds) {
@@ -130,9 +131,10 @@
 				lllplayer.seek(t);
 			}
 			
-			function removeAnnotation(button) {
+			function removeAnnotation(button, querySelector) {
 				$(button).parent().remove();
-				generateNames($('#annotationsList .dynamic-hit-question'));
+				$numAnnotations = $(querySelector + ' .num-annotations');
+				generateNames($(querySelector + ' .dynamic-hit-question'), $numAnnotations);
 			}
 			
 		</script>
@@ -213,9 +215,9 @@
 					data-for="lllplayer"
 					data-width="625" ></div>
 				
-				<button type="button" onclick="addNewAnnotation();">Add new annotation</button>
-				<input value="0" type="hidden" name="NumAnnotations" id="NumAnnotations" />
+				<button type="button" onclick="addNewAnnotation('#annotationsList');">Add new annotation</button>
 				<div id="annotationsList">
+					<input value="0" type="hidden" name="NumAnnotations" class="num-annotations" />
 					<div class="emptyListMessage">
 						This list is empty.
 						Will be removed when addNewAnnotation.
@@ -223,7 +225,7 @@
 					<!-- NOTE: input type=number does not work in IE9 and earlier -->
 					<div id="annotationTemplate" class="hit-foreach">
 						<div class="dynamic-hit-question" data-name="Annotation">
-							<button type="button" class="delete" onclick="removeAnnotation(this);">x</button>
+							<button type="button" class="delete" onclick="removeAnnotation(this, '#annotationsList');">x</button>
 							<div class="timecontrol">
 								<button type="button" onclick="incTime(this, -5);">-5s</button>
 								<span class="hh">
