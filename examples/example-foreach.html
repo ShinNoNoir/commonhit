@@ -106,7 +106,7 @@
 				Templates can be given an <code>id</code>, 
 				such that you can add new instances within a script: 
 			</p>
-							<script>
+				<script>
 					function runExample(id) {
 						eval($('#'+id).text());
 					}
@@ -129,6 +129,34 @@ HIT.generateIdNames($('#ScriptedList'));
 			</div>
 			<br />
 			<button type="button" onclick="runExample('scriptExample');">Add item to ScriptedList</button>
+		</div>
+		<div>
+			<p>
+				It is also possible to get them byNode: 
+			</p>
+				<script>
+					function runExample(id) {
+						eval($('#'+id).text());
+					}
+				</script>
+				<blockquote>
+					<pre id="scriptExampleByNode">
+window.counter2 = (window.counter2 || 0) + 1;
+
+HIT.Template.byNode(document.getElementById('scriptedForeach2')).addItem({
+	value: counter2,
+	label: 'Vote for ' + counter2
+});
+HIT.generateIdNames($('#ScriptedList2'));
+</pre>
+				</blockquote>
+			<div class="hit-question"  data-name="ScriptedList2" id="ScriptedList2">
+				<div class="hit-foreach" id="scriptedForeach2">
+					<input type="radio" value="{{value}}" /><label>{{label}}</label><br />
+				</div>
+			</div>
+			<br />
+			<button type="button" onclick="runExample('scriptExampleByNode');">Add item to ScriptedList2</button>
 		</div>
 	</body>
 </html>
