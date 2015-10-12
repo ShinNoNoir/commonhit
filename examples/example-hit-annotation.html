@@ -92,6 +92,7 @@
 					lastIdx = idx;
 				});
 				$numAnnotations.val(lastIdx + 1);
+				return lastIdx + 1;
 			}
 			
 			function setAnnotationTime($annotationNode, seconds) {
@@ -136,7 +137,10 @@
 				var $annotationsList = $(button).closest('.annotations-list');
 				var $numAnnotations = $annotationsList.find(' .num-annotations');
 				$(button).parent().remove();
-				generateNames($annotationsList.find('.dynamic-hit-question'), $numAnnotations);
+				var numItems = generateNames($annotationsList.find('.dynamic-hit-question'), $numAnnotations);
+				
+				if (numItems == 0)
+					$annotationsList.find('.emptyListMessage').show();
 			}
 			
 		</script>
