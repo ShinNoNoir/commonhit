@@ -20,21 +20,21 @@
 				text-align: right;
 			}
 			
-			#annotationsList .emptyListMessage {
+			.annotations-list .emptyListMessage {
 				margin: 8px;
 				font-style: italic;
 			}
-			#annotationsList button.delete {
+			.annotations-list button.delete {
 				color: red;
 				font-weight: bold;
 			}
-			#annotationsList .timecontrol {
+			.annotations-list .timecontrol {
 				display: inline-block;
 			}
-			#annotationsList textarea {
+			.annotations-list textarea {
 				vertical-align: top;
 			}
-			#annotationsList .dynamic-hit-question {
+			.annotations-list .dynamic-hit-question {
 				margin-bottom: 5px;
 				margin-top: 10px;
 				background: lavender;
@@ -216,7 +216,7 @@
 					data-width="625" ></div>
 				
 				<button type="button" onclick="addNewAnnotation('#annotationsList');">Add new annotation</button>
-				<div id="annotationsList">
+				<div id="annotationsList" class="annotations-list">
 					<input value="0" type="hidden" name="NumAnnotations" class="num-annotations" />
 					<div class="emptyListMessage">
 						This list is empty.
