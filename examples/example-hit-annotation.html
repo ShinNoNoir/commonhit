@@ -133,9 +133,10 @@
 			}
 			
 			function removeAnnotation(button) {
-				var $numAnnotations = $(button).closest('.annotations-list').find(' .num-annotations');
+				var $annotationsList = $(button).closest('.annotations-list');
+				var $numAnnotations = $annotationsList.find(' .num-annotations');
 				$(button).parent().remove();
-				generateNames($(querySelector + ' .dynamic-hit-question'), $numAnnotations);
+				generateNames($annotationsList.find('.dynamic-hit-question'), $numAnnotations);
 			}
 			
 		</script>
