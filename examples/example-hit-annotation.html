@@ -131,9 +131,9 @@
 				lllplayer.seek(t);
 			}
 			
-			function removeAnnotation(button, querySelector) {
+			function removeAnnotation(button) {
+				var $numAnnotations = $(button).closest('.annotations-list').find(' .num-annotations');
 				$(button).parent().remove();
-				$numAnnotations = $(querySelector + ' .num-annotations');
 				generateNames($(querySelector + ' .dynamic-hit-question'), $numAnnotations);
 			}
 			
@@ -225,7 +225,7 @@
 					<!-- NOTE: input type=number does not work in IE9 and earlier -->
 					<div id="annotationTemplate" class="hit-foreach">
 						<div class="dynamic-hit-question" data-name="Annotation">
-							<button type="button" class="delete" onclick="removeAnnotation(this, '#annotationsList');">x</button>
+							<button type="button" class="delete" onclick="removeAnnotation(this);">x</button>
 							<div class="timecontrol">
 								<button type="button" onclick="incTime(this, -5);">-5s</button>
 								<span class="hh">
