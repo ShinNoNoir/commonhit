@@ -66,9 +66,7 @@
 			
 			function addNewAnnotation(querySelector) {
 				$(querySelector + ' .emptyListMessage').hide();
-				HIT.Template.byId['annotationTemplate'].addItem({
-					foo: 'bar'
-				});
+				HIT.Template.byId['annotationTemplate'].addItem({/* empty object */});
 				var $newAnnotation = $(querySelector + ' .dynamic-hit-question').last();
 				var showHours = lllplayer.getDuration() >= 3600;
 				$newAnnotation.find('span.hh').toggle(showHours);
