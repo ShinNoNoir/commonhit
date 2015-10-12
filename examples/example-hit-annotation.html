@@ -66,7 +66,10 @@
 			
 			function addNewAnnotation(querySelector) {
 				$(querySelector + ' .emptyListMessage').hide();
-				HIT.Template.byId['annotationTemplate'].addItem({/* empty object */});
+				
+				var templateNode = $(querySelector + ' .annotation-template').get(0);
+				HIT.Template.byNode[templateNode].addItem({/* empty object */});
+				
 				var $newAnnotation = $(querySelector + ' .dynamic-hit-question').last();
 				var showHours = lllplayer.getDuration() >= 3600;
 				$newAnnotation.find('span.hh').toggle(showHours);
@@ -221,7 +224,7 @@
 						Will be removed when addNewAnnotation.
 					</div>
 					<!-- NOTE: input type=number does not work in IE9 and earlier -->
-					<div id="annotationTemplate" class="hit-foreach">
+					<div class="hit-foreach annotation-template">
 						<div class="dynamic-hit-question" data-name="Annotation">
 							<button type="button" class="delete" onclick="removeAnnotation(this);">x</button>
 							<div class="timecontrol">
