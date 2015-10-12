@@ -74,7 +74,7 @@
 				$newAnnotation.find('span.hh').toggle(showHours);
 				
 				setAnnotationTime($newAnnotation, lllplayer.getCurrentTime());
-				$numAnnotations = $(querySelector + ' .num-annotations');
+				var $numAnnotations = $(querySelector + ' .num-annotations');
 				generateNames($(querySelector + ' .dynamic-hit-question'), $numAnnotations);
 			}
 			
