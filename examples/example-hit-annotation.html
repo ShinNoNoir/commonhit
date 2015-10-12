@@ -58,9 +58,14 @@
 			var lllplayer; // declare but do not initialize
 			
 			function stopAndMovePlayer() {
+				var nextStep = HIT.STEPS[HIT.currentStepIndex+1];
+				var $videoContainer = $('.hit-step[data-step="' + nextStep + '"] .videoContainer');
+				
 				lllplayer.stop();
-				lllplayer.newSession('events_step2');
-				$('#videoContainer').empty().append( $('#videoPlayer').detach() );
+				lllplayer.newSession('events_step'+nextStep);
+				
+				if ($videoContainer.length > 0) 
+					$videoContainer.empty().append( $('#videoPlayer').detach() );
 			}
 			
 			function addNewAnnotation(querySelector) {
@@ -210,7 +215,7 @@
 					We show the same video below.
 					This time, please add annotations to the video.
 				</p>
-				<div id="videoContainer">
+				<div class="videoContainer">
 					(The JavaScript function stopAndMovePlayer() will move the player 
 					from the previous step to here.)
 				</div>
