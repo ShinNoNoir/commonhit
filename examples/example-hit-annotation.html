@@ -59,7 +59,6 @@
 			
 			function stopAndMovePlayer() {
 				lllplayer.stop();
-				heatmap.showHeatmapOf(lllplayer);
 				lllplayer.newSession('events_step2');
 				$('#videoContainer').empty().append( $('#videoPlayer').detach() );
 			}
@@ -202,7 +201,7 @@
 				</p>
 				
 				
-				<button type="button" onclick="stopAndMovePlayer(); HIT.nextStep();">Continue to step 3</button>
+				<button type="button" onclick="heatmap.showHeatmapOf(lllplayer); stopAndMovePlayer(); HIT.nextStep();">Continue to step 3</button>
 			</div>
 			
 			<div class="question-group hit-step" data-step="2">
