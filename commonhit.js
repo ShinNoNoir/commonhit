@@ -12,6 +12,8 @@ HIT = {
 	
 	STEPS: [],
 	STEPS_CONTAINER: undefined,
+	STEPS_ANIMATION_SHOW_SPEED: 400,
+	STEPS_ANIMATION_HIDE_SPEED: 400,
 	currentStep: undefined,
 	currentStepIndex: -1,
 	
@@ -105,11 +107,11 @@ HIT = {
 		var currentStep = HIT.currentStep = HIT.STEPS[HIT.currentStepIndex];
 		
 		if (prevStep !== undefined) {
-			$('.hit-step[data-step="' + prevStep + '"]').hide(400);
+			$('.hit-step[data-step="' + prevStep + '"]').hide(HIT.STEPS_ANIMATION_HIDE_SPEED);
 		}
 		if (currentStep !== undefined) {
 			var $currentStep = $('.hit-step[data-step="' + currentStep + '"]')
-			$currentStep.show(400, undefined, function () {
+			$currentStep.show(HIT.STEPS_ANIMATION_SHOW_SPEED, undefined, function () {
 				if (HIT.currentStepIndex > 0) {
 					(HIT.STEPS_CONTAINER || $currentStep).goTo();
 				}
