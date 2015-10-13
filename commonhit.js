@@ -96,7 +96,7 @@ HIT = {
 		HIT.currentStepIndex = -1;
 	};
 	
-	HIT.nextStep = function () {
+	HIT.nextStep = function (callback) {
 		if (HIT.currentStepIndex >= HIT.STEPS.length)
 			return;
 		
@@ -113,6 +113,8 @@ HIT = {
 				if (HIT.currentStepIndex > 0) {
 					(HIT.STEPS_CONTAINER || $currentStep).goTo();
 				}
+				if (callback)
+					callback($currentStep);
 			});
 		}
 	};
