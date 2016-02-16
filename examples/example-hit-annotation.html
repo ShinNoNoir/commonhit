@@ -58,6 +58,9 @@
 			var lllplayer, lllplayer2, lllplayer3; // declare but do not initialize
 			
 			function addNewAnnotation(querySelector) {
+				var $annotationsList = $(querySelector);
+				var lllplayer = window[$annotationsList.data('for')];
+				
 				$(querySelector + ' .emptyListMessage').hide();
 				
 				var templateNode = $(querySelector + ' .annotation-template').get(0);
@@ -105,6 +108,9 @@
 			}
 			
 			function incTime(button, delta) {
+				var $annotationsList = $(button).closest('.annotations-list');
+				var lllplayer = window[$annotationsList.data('for')];
+				
 				$annotationNode = $(button).parents('.dynamic-hit-question');
 				var newTime = getAnnotationTime($annotationNode) + delta;
 				
@@ -115,12 +121,18 @@
 			}
 			
 			function syncTime(button) {
+				var $annotationsList = $(button).closest('.annotations-list');
+				var lllplayer = window[$annotationsList.data('for')];
+				
 				$annotationNode = $(button).parents('.dynamic-hit-question');
 				var newTime = lllplayer.getCurrentTime();
 				setAnnotationTime($annotationNode, newTime);
 			}
 			
 			function previewAnnotationMoment(anchor) {
+				var $annotationsList = $(anchor).closest('.annotations-list');
+				var lllplayer = window[$annotationsList.data('for')];
+				
 				$annotationNode = $(anchor).parents('.dynamic-hit-question');
 				var t = getAnnotationTime($annotationNode);
 				lllplayer.seek(t);
@@ -227,7 +239,9 @@
 					data-width="625" ></div>
 				
 				<button type="button" onclick="addNewAnnotation('#annotationsList');">Add new annotation</button>
-				<div id="annotationsList" class="annotations-list">
+				<div id="annotationsList" class="annotations-list"
+				     data-for="lllplayer2"
+				>
 					<input value="0" type="hidden" name="NumAnnotations" class="num-annotations" />
 					<div class="emptyListMessage">
 						This list is empty.
@@ -280,7 +294,9 @@
 				</div>
 								
 				<button type="button" onclick="addNewAnnotation('#annotationsList2');">Add new annotation</button>
-				<div id="annotationsList2" class="annotations-list">
+				<div id="annotationsList2" class="annotations-list"
+				     data-for="lllplayer3"
+				>
 					<input value="0" type="hidden" name="NumAnnotations2" class="num-annotations" />
 					<div class="emptyListMessage">
 						This list is empty.
