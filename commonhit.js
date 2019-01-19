@@ -120,6 +120,29 @@ HIT = {
 			});
 		}
 	};
+
+	HIT.prevStep = function (callback) {
+		if (HIT.currentStepIndex == 0)
+			return;
+		
+		var nextStep = HIT.currentStep;
+		HIT.currentStepIndex--;
+		var currentStep = HIT.currentStep = HIT.STEPS[HIT.currentStepIndex];
+		
+		if (nextStep !== undefined) {
+			$('.hit-step[data-step="' + nextStep + '"]').hide(HIT.STEPS_ANIMATION_HIDE_SPEED);
+		}
+		if (currentStep !== undefined) {
+			var $currentStep = $('.hit-step[data-step="' + currentStep + '"]')
+			$currentStep.show(HIT.STEPS_ANIMATION_SHOW_SPEED, undefined, function () {
+				if (HIT.currentStepIndex > 0) {
+					(HIT.STEPS_CONTAINER || $currentStep).goTo();
+				}
+				if (callback)
+					callback($currentStep);
+			});
+		}
+	};
 	
 	HIT.debugTemplate = function () {
 		if (HIT.DEBUG && HIT.DEBUG_VARS !== undefined) {
